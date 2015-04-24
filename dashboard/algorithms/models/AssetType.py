@@ -10,15 +10,24 @@ class Technology(models.Model):
     max_lifetime = models.IntegerField()
     obsolescence_lifetime = models.IntegerField()
 
+    class Meta:
+        verbose_name_plural = "Technologies"
+
     def __unicode__(self):
         return self.name
 
 
-class Asset(models.Model):
+class AssetType(models.Model):
     name = models.CharField(max_length=200)
-    fabrication_date = models.IntegerField()
-    panel = models.CharField(max_length=200, blank=True, null=True)
+
     technology = models.ForeignKey(Technology)
+    aging_function = models.ForeignKey('utils.RegressionFunction', null=True)
 
     def __unicode__(self):
         return self.name
+
+    #FAILURE PROBABILITY
+    def get_age_failure_probability(self, age):
+        return self.aging_function.predict(self.get_age())
+
+
