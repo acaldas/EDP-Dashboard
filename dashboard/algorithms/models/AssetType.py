@@ -26,8 +26,16 @@ class AssetType(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_parameters(self):
+        parameters = []
+        for c in self.component_set.all():
+            for f in c.function_set.all():
+                for fault in f.fault_set.all():
+                    for p in fault.parameter_set.all():
+                        parameters.append(p)
+
+        return parameters
+
     #FAILURE PROBABILITY
     def get_age_failure_probability(self, age):
         return self.aging_function.predict(self.get_age())
-
-

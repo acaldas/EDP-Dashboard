@@ -15,3 +15,13 @@ class Asset(models.Model):
 
     def get_age_failure_probability(self):
         return self.asset_type.aging_function.predict(self.get_age())
+
+    def __unicode__(self):
+        return self.name
+
+
+class ParameterValue(models.Model):
+    asset = models.ForeignKey(Asset)
+    parameter = models.ForeignKey('algorithms.Parameter')
+    date = models.DateField()
+    value = models.CharField(max_length=200)

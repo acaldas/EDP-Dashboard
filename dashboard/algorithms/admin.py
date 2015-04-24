@@ -6,13 +6,19 @@ from models.Component import Component
 from models.Function import Function
 from models.Fault import Fault
 
-admin.site.register(Technology)
+
+class TechnologyAdmin(admin.ModelAdmin):
+    model = Technology
+    save_as = True
+
+admin.site.register(Technology, TechnologyAdmin)
 
 
 class ValueCorrespondenceInline(NestedTabularInline):
     model = ValueCorrespondence
     fk_name = 'parameter'
     extra = 3
+    save_as = True
 
 
 class ParameterInline(NestedStackedInline):
@@ -20,6 +26,7 @@ class ParameterInline(NestedStackedInline):
     inlines = [ValueCorrespondenceInline]
     fk_name = 'fault'
     extra = 1
+    save_as = True
 
 
 #class FaultAdmin(NestedModelAdmin):
@@ -34,6 +41,7 @@ class FaultInline(NestedStackedInline):
     inlines = [ParameterInline]
     fk_name = 'function'
     extra = 1
+    save_as = True
 
 
 class FunctionInline(NestedStackedInline):
@@ -41,17 +49,19 @@ class FunctionInline(NestedStackedInline):
     inlines = [FaultInline]
     fk_name = 'component'
     extra = 1
+    save_as = True
 
 
 class ComponentInline(NestedStackedInline):
     model = Component
     inlines = [FunctionInline]
     fk_name = 'asset'
-    extra = 2
-
+    extra = 1
+    save_as = True
 
 class AssetTypeAdmin(NestedModelAdmin):
     model = AssetType
     inlines = [ComponentInline]
+    save_as = True
 
 admin.site.register(AssetType, AssetTypeAdmin)
