@@ -1,0 +1,1384 @@
+[
+{
+ "fields": {
+  "model": "logentry",
+  "app_label": "admin"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 1
+},
+{
+ "fields": {
+  "model": "permission",
+  "app_label": "auth"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 2
+},
+{
+ "fields": {
+  "model": "group",
+  "app_label": "auth"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 3
+},
+{
+ "fields": {
+  "model": "user",
+  "app_label": "auth"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 4
+},
+{
+ "fields": {
+  "model": "contenttype",
+  "app_label": "contenttypes"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 5
+},
+{
+ "fields": {
+  "model": "session",
+  "app_label": "sessions"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 6
+},
+{
+ "fields": {
+  "model": "technology",
+  "app_label": "algorithms"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 7
+},
+{
+ "fields": {
+  "model": "assettype",
+  "app_label": "algorithms"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 8
+},
+{
+ "fields": {
+  "model": "component",
+  "app_label": "algorithms"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 9
+},
+{
+ "fields": {
+  "model": "function",
+  "app_label": "algorithms"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 10
+},
+{
+ "fields": {
+  "model": "fault",
+  "app_label": "algorithms"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 11
+},
+{
+ "fields": {
+  "model": "parameter",
+  "app_label": "algorithms"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 12
+},
+{
+ "fields": {
+  "model": "valuecorrespondence",
+  "app_label": "algorithms"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 13
+},
+{
+ "fields": {
+  "model": "regressionfunction",
+  "app_label": "utils"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 14
+},
+{
+ "fields": {
+  "model": "functionvalue",
+  "app_label": "utils"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 15
+},
+{
+ "fields": {
+  "model": "asset",
+  "app_label": "network"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 16
+},
+{
+ "fields": {
+  "model": "parametervalue",
+  "app_label": "network"
+ },
+ "model": "contenttypes.contenttype",
+ "pk": 17
+},
+{
+ "fields": {
+  "expire_date": "2015-05-08T12:52:24.536Z",
+  "session_data": "NDIxYmFjNWRjZTlmNzdmNTM1NTdlYWE2ZDU0NmJmYzA0MDhmMDQ5ODp7Il9hdXRoX3VzZXJfaGFzaCI6ImU1ZGMyMWYyNTg3NmJkNWRlNTk0YWE2MGRmNDE0MDhkNDdhODM2M2IiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0="
+ },
+ "model": "sessions.session",
+ "pk": "99xmijs4pb6g07ic29s97gp7yfs0fwtz"
+},
+{
+ "fields": {
+  "max_lifetime": 10,
+  "name": "Bateria Gel",
+  "obsolescence_lifetime": 10
+ },
+ "model": "algorithms.technology",
+ "pk": 1
+},
+{
+ "fields": {
+  "max_lifetime": 20,
+  "name": "Bateria Alcalina",
+  "obsolescence_lifetime": 10
+ },
+ "model": "algorithms.technology",
+ "pk": 2
+},
+{
+ "fields": {
+  "aging_function": 5,
+  "technology": 1,
+  "name": "Bateria Gel"
+ },
+ "model": "algorithms.assettype",
+ "pk": 1
+},
+{
+ "fields": {
+  "aging_function": 4,
+  "technology": 2,
+  "name": "Bateria Alcalina"
+ },
+ "model": "algorithms.assettype",
+ "pk": 2
+},
+{
+ "fields": {
+  "name": "Baterias",
+  "asset": 1
+ },
+ "model": "algorithms.component",
+ "pk": 1
+},
+{
+ "fields": {
+  "name": "Baterias",
+  "asset": 2
+ },
+ "model": "algorithms.component",
+ "pk": 2
+},
+{
+ "fields": {
+  "component": 1,
+  "name": "Assegurar a alimenta\u00e7\u00e3o DC"
+ },
+ "model": "algorithms.function",
+ "pk": 1
+},
+{
+ "fields": {
+  "component": 2,
+  "name": "Assegurar a alimenta\u00e7\u00e3o DC"
+ },
+ "model": "algorithms.function",
+ "pk": 2
+},
+{
+ "fields": {
+  "function": 1,
+  "condition_weight": 70.0,
+  "name": "Autonomia insuficiente",
+  "local_weight": 40.0,
+  "global_weight": 40.0,
+  "age_weight": 20.0
+ },
+ "model": "algorithms.fault",
+ "pk": 1
+},
+{
+ "fields": {
+  "function": 1,
+  "condition_weight": 70.0,
+  "name": "Tens\u00e3o fora dos par\u00e2metros",
+  "local_weight": 40.0,
+  "global_weight": 40.0,
+  "age_weight": 20.0
+ },
+ "model": "algorithms.fault",
+ "pk": 2
+},
+{
+ "fields": {
+  "function": 2,
+  "condition_weight": 70.0,
+  "name": "Autonomia insuficiente",
+  "local_weight": 40.0,
+  "global_weight": 40.0,
+  "age_weight": 20.0
+ },
+ "model": "algorithms.fault",
+ "pk": 3
+},
+{
+ "fields": {
+  "function": 2,
+  "condition_weight": 70.0,
+  "name": "Tens\u00e3o fora dos par\u00e2metros",
+  "local_weight": 40.0,
+  "global_weight": 40.0,
+  "age_weight": 20.0
+ },
+ "model": "algorithms.fault",
+ "pk": 4
+},
+{
+ "fields": {
+  "fault": 1,
+  "name": "Tempo de descarga - Gel"
+ },
+ "model": "algorithms.parameter",
+ "pk": 1
+},
+{
+ "fields": {
+  "fault": 2,
+  "name": "Tens\u00e3o CC - Gel"
+ },
+ "model": "algorithms.parameter",
+ "pk": 2
+},
+{
+ "fields": {
+  "fault": 3,
+  "name": "Tempo de descarga - Alcalina"
+ },
+ "model": "algorithms.parameter",
+ "pk": 3
+},
+{
+ "fields": {
+  "fault": 4,
+  "name": "Tens\u00e3o CC - Alcalina"
+ },
+ "model": "algorithms.parameter",
+ "pk": 4
+},
+{
+ "fields": {
+  "alert": "",
+  "warning": "",
+  "parameter": 1,
+  "value": "20",
+  "health_index": 100.0
+ },
+ "model": "algorithms.valuecorrespondence",
+ "pk": 1
+},
+{
+ "fields": {
+  "alert": "",
+  "warning": "",
+  "parameter": 1,
+  "value": "15",
+  "health_index": 75.0
+ },
+ "model": "algorithms.valuecorrespondence",
+ "pk": 2
+},
+{
+ "fields": {
+  "alert": "",
+  "warning": "",
+  "parameter": 1,
+  "value": "10",
+  "health_index": 50.0
+ },
+ "model": "algorithms.valuecorrespondence",
+ "pk": 3
+},
+{
+ "fields": {
+  "alert": "",
+  "warning": "",
+  "parameter": 1,
+  "value": "5",
+  "health_index": 25.0
+ },
+ "model": "algorithms.valuecorrespondence",
+ "pk": 4
+},
+{
+ "fields": {
+  "alert": "",
+  "warning": "",
+  "parameter": 1,
+  "value": "0",
+  "health_index": 0.0
+ },
+ "model": "algorithms.valuecorrespondence",
+ "pk": 5
+},
+{
+ "fields": {
+  "alert": "",
+  "warning": "",
+  "parameter": 2,
+  "value": "12,5 - 12",
+  "health_index": 100.0
+ },
+ "model": "algorithms.valuecorrespondence",
+ "pk": 6
+},
+{
+ "fields": {
+  "alert": "",
+  "warning": "",
+  "parameter": 2,
+  "value": "12 - 11,5",
+  "health_index": 75.0
+ },
+ "model": "algorithms.valuecorrespondence",
+ "pk": 7
+},
+{
+ "fields": {
+  "alert": "",
+  "warning": "",
+  "parameter": 2,
+  "value": "11,5 - 11",
+  "health_index": 50.0
+ },
+ "model": "algorithms.valuecorrespondence",
+ "pk": 8
+},
+{
+ "fields": {
+  "alert": "",
+  "warning": "",
+  "parameter": 2,
+  "value": "< 11",
+  "health_index": 25.0
+ },
+ "model": "algorithms.valuecorrespondence",
+ "pk": 9
+},
+{
+ "fields": {
+  "alert": "",
+  "warning": "",
+  "parameter": 3,
+  "value": "20",
+  "health_index": 100.0
+ },
+ "model": "algorithms.valuecorrespondence",
+ "pk": 11
+},
+{
+ "fields": {
+  "alert": "",
+  "warning": "",
+  "parameter": 3,
+  "value": "15",
+  "health_index": 75.0
+ },
+ "model": "algorithms.valuecorrespondence",
+ "pk": 12
+},
+{
+ "fields": {
+  "alert": "",
+  "warning": "",
+  "parameter": 4,
+  "value": "1,42 - 1,3",
+  "health_index": 100.0
+ },
+ "model": "algorithms.valuecorrespondence",
+ "pk": 13
+},
+{
+ "fields": {
+  "alert": "",
+  "warning": "",
+  "parameter": 4,
+  "value": "1,25 - 1,2",
+  "health_index": 50.0
+ },
+ "model": "algorithms.valuecorrespondence",
+ "pk": 14
+},
+{
+ "fields": {
+  "type": 4,
+  "name": "Bateria Alcalina Aging"
+ },
+ "model": "utils.regressionfunction",
+ "pk": 1
+},
+{
+ "fields": {
+  "type": 4,
+  "name": "Bateria Alcalina Aging"
+ },
+ "model": "utils.regressionfunction",
+ "pk": 2
+},
+{
+ "fields": {
+  "type": 4,
+  "name": "Bateria Alcalina Aging"
+ },
+ "model": "utils.regressionfunction",
+ "pk": 3
+},
+{
+ "fields": {
+  "type": 4,
+  "name": "Bateria Alcalina Aging"
+ },
+ "model": "utils.regressionfunction",
+ "pk": 4
+},
+{
+ "fields": {
+  "type": 3,
+  "name": "Bateria Gel Aging"
+ },
+ "model": "utils.regressionfunction",
+ "pk": 5
+},
+{
+ "fields": {
+  "function": 1,
+  "x": 0.0,
+  "y": 0.05
+ },
+ "model": "utils.functionvalue",
+ "pk": 1
+},
+{
+ "fields": {
+  "function": 1,
+  "x": 5.0,
+  "y": 0.2
+ },
+ "model": "utils.functionvalue",
+ "pk": 2
+},
+{
+ "fields": {
+  "function": 1,
+  "x": 10.0,
+  "y": 0.4
+ },
+ "model": "utils.functionvalue",
+ "pk": 3
+},
+{
+ "fields": {
+  "function": 1,
+  "x": 15.0,
+  "y": 0.7
+ },
+ "model": "utils.functionvalue",
+ "pk": 4
+},
+{
+ "fields": {
+  "function": 1,
+  "x": 20.0,
+  "y": 1.0
+ },
+ "model": "utils.functionvalue",
+ "pk": 5
+},
+{
+ "fields": {
+  "function": 2,
+  "x": 0.0,
+  "y": 0.05
+ },
+ "model": "utils.functionvalue",
+ "pk": 6
+},
+{
+ "fields": {
+  "function": 2,
+  "x": 5.0,
+  "y": 0.2
+ },
+ "model": "utils.functionvalue",
+ "pk": 7
+},
+{
+ "fields": {
+  "function": 2,
+  "x": 10.0,
+  "y": 0.4
+ },
+ "model": "utils.functionvalue",
+ "pk": 8
+},
+{
+ "fields": {
+  "function": 2,
+  "x": 15.0,
+  "y": 0.7
+ },
+ "model": "utils.functionvalue",
+ "pk": 9
+},
+{
+ "fields": {
+  "function": 2,
+  "x": 20.0,
+  "y": 1.0
+ },
+ "model": "utils.functionvalue",
+ "pk": 10
+},
+{
+ "fields": {
+  "function": 3,
+  "x": 0.0,
+  "y": 0.05
+ },
+ "model": "utils.functionvalue",
+ "pk": 11
+},
+{
+ "fields": {
+  "function": 3,
+  "x": 5.0,
+  "y": 0.2
+ },
+ "model": "utils.functionvalue",
+ "pk": 12
+},
+{
+ "fields": {
+  "function": 3,
+  "x": 10.0,
+  "y": 0.4
+ },
+ "model": "utils.functionvalue",
+ "pk": 13
+},
+{
+ "fields": {
+  "function": 3,
+  "x": 15.0,
+  "y": 0.7
+ },
+ "model": "utils.functionvalue",
+ "pk": 14
+},
+{
+ "fields": {
+  "function": 3,
+  "x": 20.0,
+  "y": 1.0
+ },
+ "model": "utils.functionvalue",
+ "pk": 15
+},
+{
+ "fields": {
+  "function": 4,
+  "x": 0.0,
+  "y": 0.05
+ },
+ "model": "utils.functionvalue",
+ "pk": 16
+},
+{
+ "fields": {
+  "function": 4,
+  "x": 5.0,
+  "y": 0.2
+ },
+ "model": "utils.functionvalue",
+ "pk": 17
+},
+{
+ "fields": {
+  "function": 4,
+  "x": 10.0,
+  "y": 0.4
+ },
+ "model": "utils.functionvalue",
+ "pk": 18
+},
+{
+ "fields": {
+  "function": 4,
+  "x": 15.0,
+  "y": 0.7
+ },
+ "model": "utils.functionvalue",
+ "pk": 19
+},
+{
+ "fields": {
+  "function": 4,
+  "x": 20.0,
+  "y": 1.0
+ },
+ "model": "utils.functionvalue",
+ "pk": 20
+},
+{
+ "fields": {
+  "function": 5,
+  "x": 0.0,
+  "y": 0.05
+ },
+ "model": "utils.functionvalue",
+ "pk": 21
+},
+{
+ "fields": {
+  "function": 5,
+  "x": 2.5,
+  "y": 0.25
+ },
+ "model": "utils.functionvalue",
+ "pk": 22
+},
+{
+ "fields": {
+  "function": 5,
+  "x": 5.0,
+  "y": 0.5
+ },
+ "model": "utils.functionvalue",
+ "pk": 23
+},
+{
+ "fields": {
+  "function": 5,
+  "x": 7.5,
+  "y": 0.75
+ },
+ "model": "utils.functionvalue",
+ "pk": 24
+},
+{
+ "fields": {
+  "function": 5,
+  "x": 10.0,
+  "y": 1.0
+ },
+ "model": "utils.functionvalue",
+ "pk": 25
+},
+{
+ "fields": {
+  "fabrication_date": 2000,
+  "asset_type": 2,
+  "name": "Bateria Alcalina Teste",
+  "panel": ""
+ },
+ "model": "network.asset",
+ "pk": 1
+},
+{
+ "fields": {
+  "codename": "add_logentry",
+  "name": "Can add log entry",
+  "content_type": 1
+ },
+ "model": "auth.permission",
+ "pk": 1
+},
+{
+ "fields": {
+  "codename": "change_logentry",
+  "name": "Can change log entry",
+  "content_type": 1
+ },
+ "model": "auth.permission",
+ "pk": 2
+},
+{
+ "fields": {
+  "codename": "delete_logentry",
+  "name": "Can delete log entry",
+  "content_type": 1
+ },
+ "model": "auth.permission",
+ "pk": 3
+},
+{
+ "fields": {
+  "codename": "add_permission",
+  "name": "Can add permission",
+  "content_type": 2
+ },
+ "model": "auth.permission",
+ "pk": 4
+},
+{
+ "fields": {
+  "codename": "change_permission",
+  "name": "Can change permission",
+  "content_type": 2
+ },
+ "model": "auth.permission",
+ "pk": 5
+},
+{
+ "fields": {
+  "codename": "delete_permission",
+  "name": "Can delete permission",
+  "content_type": 2
+ },
+ "model": "auth.permission",
+ "pk": 6
+},
+{
+ "fields": {
+  "codename": "add_group",
+  "name": "Can add group",
+  "content_type": 3
+ },
+ "model": "auth.permission",
+ "pk": 7
+},
+{
+ "fields": {
+  "codename": "change_group",
+  "name": "Can change group",
+  "content_type": 3
+ },
+ "model": "auth.permission",
+ "pk": 8
+},
+{
+ "fields": {
+  "codename": "delete_group",
+  "name": "Can delete group",
+  "content_type": 3
+ },
+ "model": "auth.permission",
+ "pk": 9
+},
+{
+ "fields": {
+  "codename": "add_user",
+  "name": "Can add user",
+  "content_type": 4
+ },
+ "model": "auth.permission",
+ "pk": 10
+},
+{
+ "fields": {
+  "codename": "change_user",
+  "name": "Can change user",
+  "content_type": 4
+ },
+ "model": "auth.permission",
+ "pk": 11
+},
+{
+ "fields": {
+  "codename": "delete_user",
+  "name": "Can delete user",
+  "content_type": 4
+ },
+ "model": "auth.permission",
+ "pk": 12
+},
+{
+ "fields": {
+  "codename": "add_contenttype",
+  "name": "Can add content type",
+  "content_type": 5
+ },
+ "model": "auth.permission",
+ "pk": 13
+},
+{
+ "fields": {
+  "codename": "change_contenttype",
+  "name": "Can change content type",
+  "content_type": 5
+ },
+ "model": "auth.permission",
+ "pk": 14
+},
+{
+ "fields": {
+  "codename": "delete_contenttype",
+  "name": "Can delete content type",
+  "content_type": 5
+ },
+ "model": "auth.permission",
+ "pk": 15
+},
+{
+ "fields": {
+  "codename": "add_session",
+  "name": "Can add session",
+  "content_type": 6
+ },
+ "model": "auth.permission",
+ "pk": 16
+},
+{
+ "fields": {
+  "codename": "change_session",
+  "name": "Can change session",
+  "content_type": 6
+ },
+ "model": "auth.permission",
+ "pk": 17
+},
+{
+ "fields": {
+  "codename": "delete_session",
+  "name": "Can delete session",
+  "content_type": 6
+ },
+ "model": "auth.permission",
+ "pk": 18
+},
+{
+ "fields": {
+  "codename": "add_technology",
+  "name": "Can add technology",
+  "content_type": 7
+ },
+ "model": "auth.permission",
+ "pk": 19
+},
+{
+ "fields": {
+  "codename": "change_technology",
+  "name": "Can change technology",
+  "content_type": 7
+ },
+ "model": "auth.permission",
+ "pk": 20
+},
+{
+ "fields": {
+  "codename": "delete_technology",
+  "name": "Can delete technology",
+  "content_type": 7
+ },
+ "model": "auth.permission",
+ "pk": 21
+},
+{
+ "fields": {
+  "codename": "add_assettype",
+  "name": "Can add asset type",
+  "content_type": 8
+ },
+ "model": "auth.permission",
+ "pk": 22
+},
+{
+ "fields": {
+  "codename": "change_assettype",
+  "name": "Can change asset type",
+  "content_type": 8
+ },
+ "model": "auth.permission",
+ "pk": 23
+},
+{
+ "fields": {
+  "codename": "delete_assettype",
+  "name": "Can delete asset type",
+  "content_type": 8
+ },
+ "model": "auth.permission",
+ "pk": 24
+},
+{
+ "fields": {
+  "codename": "add_component",
+  "name": "Can add component",
+  "content_type": 9
+ },
+ "model": "auth.permission",
+ "pk": 25
+},
+{
+ "fields": {
+  "codename": "change_component",
+  "name": "Can change component",
+  "content_type": 9
+ },
+ "model": "auth.permission",
+ "pk": 26
+},
+{
+ "fields": {
+  "codename": "delete_component",
+  "name": "Can delete component",
+  "content_type": 9
+ },
+ "model": "auth.permission",
+ "pk": 27
+},
+{
+ "fields": {
+  "codename": "add_function",
+  "name": "Can add function",
+  "content_type": 10
+ },
+ "model": "auth.permission",
+ "pk": 28
+},
+{
+ "fields": {
+  "codename": "change_function",
+  "name": "Can change function",
+  "content_type": 10
+ },
+ "model": "auth.permission",
+ "pk": 29
+},
+{
+ "fields": {
+  "codename": "delete_function",
+  "name": "Can delete function",
+  "content_type": 10
+ },
+ "model": "auth.permission",
+ "pk": 30
+},
+{
+ "fields": {
+  "codename": "add_fault",
+  "name": "Can add fault",
+  "content_type": 11
+ },
+ "model": "auth.permission",
+ "pk": 31
+},
+{
+ "fields": {
+  "codename": "change_fault",
+  "name": "Can change fault",
+  "content_type": 11
+ },
+ "model": "auth.permission",
+ "pk": 32
+},
+{
+ "fields": {
+  "codename": "delete_fault",
+  "name": "Can delete fault",
+  "content_type": 11
+ },
+ "model": "auth.permission",
+ "pk": 33
+},
+{
+ "fields": {
+  "codename": "add_parameter",
+  "name": "Can add parameter",
+  "content_type": 12
+ },
+ "model": "auth.permission",
+ "pk": 34
+},
+{
+ "fields": {
+  "codename": "change_parameter",
+  "name": "Can change parameter",
+  "content_type": 12
+ },
+ "model": "auth.permission",
+ "pk": 35
+},
+{
+ "fields": {
+  "codename": "delete_parameter",
+  "name": "Can delete parameter",
+  "content_type": 12
+ },
+ "model": "auth.permission",
+ "pk": 36
+},
+{
+ "fields": {
+  "codename": "add_valuecorrespondence",
+  "name": "Can add value correspondence",
+  "content_type": 13
+ },
+ "model": "auth.permission",
+ "pk": 37
+},
+{
+ "fields": {
+  "codename": "change_valuecorrespondence",
+  "name": "Can change value correspondence",
+  "content_type": 13
+ },
+ "model": "auth.permission",
+ "pk": 38
+},
+{
+ "fields": {
+  "codename": "delete_valuecorrespondence",
+  "name": "Can delete value correspondence",
+  "content_type": 13
+ },
+ "model": "auth.permission",
+ "pk": 39
+},
+{
+ "fields": {
+  "codename": "add_regressionfunction",
+  "name": "Can add regression function",
+  "content_type": 14
+ },
+ "model": "auth.permission",
+ "pk": 40
+},
+{
+ "fields": {
+  "codename": "change_regressionfunction",
+  "name": "Can change regression function",
+  "content_type": 14
+ },
+ "model": "auth.permission",
+ "pk": 41
+},
+{
+ "fields": {
+  "codename": "delete_regressionfunction",
+  "name": "Can delete regression function",
+  "content_type": 14
+ },
+ "model": "auth.permission",
+ "pk": 42
+},
+{
+ "fields": {
+  "codename": "add_functionvalue",
+  "name": "Can add function value",
+  "content_type": 15
+ },
+ "model": "auth.permission",
+ "pk": 43
+},
+{
+ "fields": {
+  "codename": "change_functionvalue",
+  "name": "Can change function value",
+  "content_type": 15
+ },
+ "model": "auth.permission",
+ "pk": 44
+},
+{
+ "fields": {
+  "codename": "delete_functionvalue",
+  "name": "Can delete function value",
+  "content_type": 15
+ },
+ "model": "auth.permission",
+ "pk": 45
+},
+{
+ "fields": {
+  "codename": "add_asset",
+  "name": "Can add asset",
+  "content_type": 16
+ },
+ "model": "auth.permission",
+ "pk": 46
+},
+{
+ "fields": {
+  "codename": "change_asset",
+  "name": "Can change asset",
+  "content_type": 16
+ },
+ "model": "auth.permission",
+ "pk": 47
+},
+{
+ "fields": {
+  "codename": "delete_asset",
+  "name": "Can delete asset",
+  "content_type": 16
+ },
+ "model": "auth.permission",
+ "pk": 48
+},
+{
+ "fields": {
+  "codename": "add_parametervalue",
+  "name": "Can add parameter value",
+  "content_type": 17
+ },
+ "model": "auth.permission",
+ "pk": 49
+},
+{
+ "fields": {
+  "codename": "change_parametervalue",
+  "name": "Can change parameter value",
+  "content_type": 17
+ },
+ "model": "auth.permission",
+ "pk": 50
+},
+{
+ "fields": {
+  "codename": "delete_parametervalue",
+  "name": "Can delete parameter value",
+  "content_type": 17
+ },
+ "model": "auth.permission",
+ "pk": 51
+},
+{
+ "fields": {
+  "username": "admin",
+  "first_name": "",
+  "last_name": "",
+  "is_active": true,
+  "is_superuser": true,
+  "is_staff": true,
+  "last_login": "2015-04-24T12:52:24.510Z",
+  "groups": [],
+  "user_permissions": [],
+  "password": "pbkdf2_sha256$20000$7sw0zm03jD0C$NFmJX1COupzLOYPKV95oCgDTbqjcEJhKUr8QAT/UMHg=",
+  "email": "afonso7caldas@gmail.com",
+  "date_joined": "2015-04-24T12:51:55.771Z"
+ },
+ "model": "auth.user",
+ "pk": 1
+},
+{
+ "fields": {
+  "action_flag": 1,
+  "action_time": "2015-04-24T14:01:50.784Z",
+  "object_repr": "Bateria Alcalina",
+  "object_id": "1",
+  "change_message": "",
+  "user": 1,
+  "content_type": 7
+ },
+ "model": "admin.logentry",
+ "pk": 1
+},
+{
+ "fields": {
+  "action_flag": 1,
+  "action_time": "2015-04-24T14:02:53.107Z",
+  "object_repr": "Bateria Alcalina Aging",
+  "object_id": "1",
+  "change_message": "",
+  "user": 1,
+  "content_type": 14
+ },
+ "model": "admin.logentry",
+ "pk": 2
+},
+{
+ "fields": {
+  "action_flag": 1,
+  "action_time": "2015-04-24T14:03:01.720Z",
+  "object_repr": "Bateria Alcalina Aging",
+  "object_id": "2",
+  "change_message": "",
+  "user": 1,
+  "content_type": 14
+ },
+ "model": "admin.logentry",
+ "pk": 3
+},
+{
+ "fields": {
+  "action_flag": 1,
+  "action_time": "2015-04-24T14:03:37.841Z",
+  "object_repr": "Bateria Alcalina Aging",
+  "object_id": "3",
+  "change_message": "",
+  "user": 1,
+  "content_type": 14
+ },
+ "model": "admin.logentry",
+ "pk": 4
+},
+{
+ "fields": {
+  "action_flag": 1,
+  "action_time": "2015-04-24T14:04:47.046Z",
+  "object_repr": "Bateria Alcalina Aging",
+  "object_id": "4",
+  "change_message": "",
+  "user": 1,
+  "content_type": 14
+ },
+ "model": "admin.logentry",
+ "pk": 5
+},
+{
+ "fields": {
+  "action_flag": 1,
+  "action_time": "2015-04-24T14:10:47.080Z",
+  "object_repr": "Bateria Alcalina",
+  "object_id": "1",
+  "change_message": "",
+  "user": 1,
+  "content_type": 8
+ },
+ "model": "admin.logentry",
+ "pk": 6
+},
+{
+ "fields": {
+  "action_flag": 1,
+  "action_time": "2015-04-24T14:12:58.406Z",
+  "object_repr": "Asset object",
+  "object_id": "1",
+  "change_message": "",
+  "user": 1,
+  "content_type": 16
+ },
+ "model": "admin.logentry",
+ "pk": 7
+},
+{
+ "fields": {
+  "action_flag": 1,
+  "action_time": "2015-04-24T14:15:00.868Z",
+  "object_repr": "Bateria Alcalina",
+  "object_id": "2",
+  "change_message": "",
+  "user": 1,
+  "content_type": 7
+ },
+ "model": "admin.logentry",
+ "pk": 8
+},
+{
+ "fields": {
+  "action_flag": 2,
+  "action_time": "2015-04-24T14:15:59.992Z",
+  "object_repr": "Bateria Gel",
+  "object_id": "1",
+  "change_message": "Changed name and max_lifetime.",
+  "user": 1,
+  "content_type": 7
+ },
+ "model": "admin.logentry",
+ "pk": 9
+},
+{
+ "fields": {
+  "action_flag": 2,
+  "action_time": "2015-04-24T14:16:21.350Z",
+  "object_repr": "Bateria Alcalina",
+  "object_id": "1",
+  "change_message": "Changed technology.",
+  "user": 1,
+  "content_type": 8
+ },
+ "model": "admin.logentry",
+ "pk": 10
+},
+{
+ "fields": {
+  "action_flag": 1,
+  "action_time": "2015-04-24T14:18:03.458Z",
+  "object_repr": "Bateria Gel Aging",
+  "object_id": "5",
+  "change_message": "",
+  "user": 1,
+  "content_type": 14
+ },
+ "model": "admin.logentry",
+ "pk": 11
+},
+{
+ "fields": {
+  "action_flag": 2,
+  "action_time": "2015-04-24T14:28:26.683Z",
+  "object_repr": "Bateria Gel",
+  "object_id": "1",
+  "change_message": "Changed name, technology and aging_function.",
+  "user": 1,
+  "content_type": 8
+ },
+ "model": "admin.logentry",
+ "pk": 12
+},
+{
+ "fields": {
+  "action_flag": 1,
+  "action_time": "2015-04-24T14:35:41.423Z",
+  "object_repr": "Bateria Alcalina",
+  "object_id": "2",
+  "change_message": "",
+  "user": 1,
+  "content_type": 8
+ },
+ "model": "admin.logentry",
+ "pk": 13
+},
+{
+ "fields": {
+  "action_flag": 2,
+  "action_time": "2015-04-24T14:38:13.692Z",
+  "object_repr": "Bateria Alcalina",
+  "object_id": "2",
+  "change_message": "Changed name for component \"Baterias\".",
+  "user": 1,
+  "content_type": 8
+ },
+ "model": "admin.logentry",
+ "pk": 14
+},
+{
+ "fields": {
+  "action_flag": 2,
+  "action_time": "2015-04-24T14:39:59.239Z",
+  "object_repr": "Bateria Alcalina Teste",
+  "object_id": "1",
+  "change_message": "Changed asset_type.",
+  "user": 1,
+  "content_type": 16
+ },
+ "model": "admin.logentry",
+ "pk": 15
+}
+]

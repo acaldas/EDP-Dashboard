@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{asset.name}}</title>
+</head>
+<body>
+    <h1>{{asset.name}}</h1>
+    <div>
+        <h2>{{asset.asset_type}}</h2>
+        <h1>Acrescentar parametros globais</h1>
+        <div class="components">
+            {% with asset_type=asset.asset_type %}
+            {% for component in asset.components %}
+            <div class="component">
+                <h3>{{component.name}}: </h3>
+                {% for function in component.functions %}
+                    <h3>{{function}}: {{function.health_index}}%</h3>
+                    {% for fault in function.faults %}
+                        <h3>{{fault}}: {{fault.health_index}}%</h3>
+                        {% for parameter in fault.parameters %}
+                            <div class="parameter">
+                                {{parameter.name}} - {{parameter.values.0}} - <b>{{parameter.values.0.get_health_index}}%</b>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            {% endwith %}
+        </div>
+    </div>
+</body>
+</html>
