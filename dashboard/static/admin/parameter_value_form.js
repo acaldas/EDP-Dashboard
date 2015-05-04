@@ -6,7 +6,7 @@
                         var possible_ids = possible_values.map(function (v) {
                             return v.id
                         });
-                        var value = $('#' + parameter.id.substring(0, parameter.id.length - 9) + 'value');
+                        var value = $('#' + parameter.id.substring(0, parameter.id.length - 9) + 'value_interval');
                         var selected_option = $(value).find('option:selected')[0];
                         var selected_value = $(selected_option).attr('value');
 

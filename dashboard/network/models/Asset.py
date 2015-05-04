@@ -1,8 +1,9 @@
 __author__ = 'Afonso'
+# -*- coding: utf-8 -*-
 
 from django.db import models
 from datetime import date
-
+from django.utils.encoding import smart_str
 
 class Asset(models.Model):
     name = models.CharField(max_length=200)
@@ -21,7 +22,7 @@ class Asset(models.Model):
         return self.name
 
     def get_paramaters_and_values(self):
-        parameters = self.asset_type.get_parameters()
+        parameters = self.asset_type.get_parameters() + self.asset_type.get_global_parameters()
         result = dict.fromkeys(p.name for p in parameters)
         for p in parameters:
             result[p.name] = [{'id': v.id, 'value': v.value} for v in p.get_possible_correspondences()]
@@ -38,7 +39,7 @@ class Asset(models.Model):
             if p_values is not None and p_values[0] is not None and p_values[0].get_health_index() is not None:
                 values.append(p_values[0].get_health_index())
         if not values:
-            return 0 #TODO CHECK THIS, SHOULD be NONE
+            return 0 #TODO CHECK THIS, SHOULD BE NONE
 
         return min(values)
 
@@ -54,11 +55,11 @@ class Asset(models.Model):
                         p.values = self.get_parameter_values(p.pk)
 
                     fault.health_index = self.get_fault_health_index(fault)
-                for fault in f.faults:
-                    print fault.global_weight
-                    print fault.health_index
-                f.health_index = sum(fault.global_weight/100*fault.health_index for fault in f.faults)
 
+                f.health_index = sum(fault.global_weight/100*fault.health_index for fault in f.faults)
+        self.global_parameters = self.asset_type.get_global_parameters()
+        for p in self.global_parameters:
+            p.values = self.get_parameter_values(p.pk)
         return self
 
 
@@ -84,5 +85,7 @@ class ParameterValue(models.Model):
 
     def __unicode__(self):
         if not self.value_interval:
-            return '-----'
-        return str(self.value_interval)
+            if not self.value:
+                return '-----'
+            return str(self.parameter).decode('utf-8') + ' - ' + str(self.value).decode('utf-8')
+        return str(self.parameter).decode('utf-8') + ' - ' + str(self.value_interval).decode('utf-8')

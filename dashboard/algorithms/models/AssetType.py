@@ -27,7 +27,7 @@ class AssetType(models.Model):
         return self.name
 
     def get_parameters(self):
-        parameters = list(self.global_parameters.all())
+        parameters = []
         for c in self.component_set.all():
             for f in c.function_set.all():
                 for fault in f.fault_set.all():
@@ -35,6 +35,9 @@ class AssetType(models.Model):
                         parameters.append(p)
 
         return parameters
+
+    def get_global_parameters(self):
+        return list(self.global_parameters.all())
 
     #FAILURE PROBABILITY
     def get_age_failure_probability(self, age):

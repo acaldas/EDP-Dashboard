@@ -18,10 +18,6 @@ class ParameterValueForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ParameterValueForm, self).__init__(*args, **kwargs)
-        #print self.instance.asset
-
-        #self.fields['goal_scorer'].queryset =
-        #Player.objects.filter(gameroster__game=self.instance.game)
 
 
 class ParameterValueInline(admin.TabularInline):
@@ -38,9 +34,9 @@ class ParameterValueInline(admin.TabularInline):
 
         if db_field.name == 'parameter':
             if request._obj_ is not None:
-                possible_parameters = map(lambda x: x.pk, request._obj_.asset_type.get_parameters())
+                possible_parameters = map(lambda x: x.pk, request._obj_.asset_type.get_parameters() + request._obj_.asset_type.get_global_parameters())
                 field.queryset = field.queryset.filter(pk__in=possible_parameters)
-                self.parameter_field = db_field
+                print field.queryset
             else:
                 field.queryset = field.queryset.none()
 

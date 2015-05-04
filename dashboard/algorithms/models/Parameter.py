@@ -11,7 +11,7 @@ class Parameter(models.Model):
     function = models.ForeignKey('utils.RegressionFunction', null=True, blank=True)
 
     def __unicode__(self):
-        return self.name
+        return u'{}'.format(self.name)
 
     def get_possible_correspondences(self):
         return self.valuecorrespondence_set.all()
@@ -49,6 +49,11 @@ class Parameter(models.Model):
     def get_sum(self, value):
         return self.get_health_index(value)/100.0
 
+    def save(self, *args, **kwargs):
+        if isinstance(self.name, str):
+            self.name = self.name.decode("utf-8")
+        super(Parameter, self).save(*args, **kwargs)
+
 
 class ValueCorrespondence(models.Model):
     parameter = models.ForeignKey(Parameter)
@@ -58,12 +63,18 @@ class ValueCorrespondence(models.Model):
     alert = models.CharField(max_length=200, null=True, blank=True)
 
     def __unicode__(self):
-        return self.value
+        return u'{0}'.format(self.value)
 
     def check_correspondence(self, value):
         return self.value == value
+
+    def save(self, *args, **kwargs):
+        if isinstance(self.value, str):
+            self.value = self.value.decode("utf-8")
+        super(ValueCorrespondence, self).save(*args, **kwargs)
 
 
 class Parameters(Parameter):
     class Meta:
         proxy = True
+        verbose_name_plural = "Parameters"

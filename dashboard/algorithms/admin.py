@@ -1,7 +1,7 @@
 from django.contrib import admin
 from nested_inline.admin import NestedStackedInline, NestedTabularInline, NestedModelAdmin
 from models.AssetType import Technology, AssetType, GlobalParameter
-from models.Parameter import Parameter, ValueCorrespondence
+from models.Parameter import Parameter, ValueCorrespondence, Parameters
 from models.Component import Component
 from models.Function import Function
 from models.Fault import Fault
@@ -60,11 +60,12 @@ class ComponentInline(NestedStackedInline):
 
 
 class ParametersAdmin(admin.ModelAdmin):
-    model = Parameter
+    model = Parameters
     inlines = [ValueCorrespondenceInline]
 
     def queryset(self, request):
         return self.model.objects.all()
+admin.site.register(Parameters, ParametersAdmin)
 
 
 class GlobalParameterInline(admin.TabularInline):
