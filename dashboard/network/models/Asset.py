@@ -4,6 +4,8 @@ __author__ = 'Afonso'
 from django.db import models
 from datetime import date
 from django.utils.encoding import smart_str
+from algorithms.models.AssetType import GlobalParameter
+
 
 class Asset(models.Model):
     name = models.CharField(max_length=200)
@@ -18,19 +20,22 @@ class Asset(models.Model):
     def get_age_failure_probability(self):
         return self.asset_type.aging_function.predict(self.get_age())
 
-    def __unicode__(self):
-        return self.name
-
     def get_paramaters_and_values(self):
         parameters = self.asset_type.get_parameters() + self.asset_type.get_global_parameters()
         result = dict.fromkeys(p.name for p in parameters)
         for p in parameters:
-            result[p.name] = [{'id': v.id, 'value': v.value} for v in p.get_possible_correspondences()]
-
+            result[p.name] = {
+                'values': [{'id': v.id, 'value': v.value} for v in p.get_possible_correspondences()],
+                'function': p.is_function()
+            }
+            print result[p.name]
         return result
 
     def get_parameter_values(self, parameter_id):
         return ParameterValue.objects.filter(asset=self, parameter_id=parameter_id).all().order_by('date')
+
+    def get_global_parameter_info(self, parameter_id):
+        return GlobalParameter.objects.filter(asset=self.asset_type, parameter_id=parameter_id).get()
 
     def get_fault_health_index(self, fault):
         values = []
@@ -38,12 +43,35 @@ class Asset(models.Model):
             p_values = self.get_parameter_values(p.pk)
             if p_values is not None and p_values[0] is not None and p_values[0].get_health_index() is not None:
                 values.append(p_values[0].get_health_index())
+            else:
+                return None
         if not values:
-            return 0 #TODO CHECK THIS, SHOULD BE NONE
+            return None
 
         return min(values)
 
+    def get_component_health_index(self, component):
+        hi = 0
+        contribution = 0
+        for p in self.global_parameters:
+            global_weight = self.get_global_parameter_info(p.id).global_weight
+            if p.values[0] is not None and p.values[0].get_health_index() is not None:
+                contribution += global_weight
+                hi += p.values[0].get_health_index() * global_weight/100.0
+
+        for f in component.functions:
+            for fault in f.faults:
+                if fault.health_index is not None:
+                    contribution += fault.global_weight
+                    hi += fault.health_index * fault.global_weight/100.0
+        component.reliability = contribution
+        return hi/contribution*100.0
+
     def get_asset_info(self):
+        self.global_parameters = self.asset_type.get_global_parameters()
+        for p in self.global_parameters:
+            p.values = self.get_parameter_values(p.pk)
+
         self.components = self.asset_type.component_set.all()
         for c in self.components:
             c.functions = c.function_set.all()
@@ -55,12 +83,13 @@ class Asset(models.Model):
                         p.values = self.get_parameter_values(p.pk)
 
                     fault.health_index = self.get_fault_health_index(fault)
+                f.health_index = sum(fault.global_weight/100*fault.health_index for fault in f.faults if fault.health_index is not None)
+            c.health_index = self.get_component_health_index(c)
 
-                f.health_index = sum(fault.global_weight/100*fault.health_index for fault in f.faults)
-        self.global_parameters = self.asset_type.get_global_parameters()
-        for p in self.global_parameters:
-            p.values = self.get_parameter_values(p.pk)
         return self
+
+    def __unicode__(self):
+        return self.name
 
 
 class ParameterValue(models.Model):

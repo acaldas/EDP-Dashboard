@@ -13,7 +13,7 @@
             {% with asset_type=asset.asset_type %}
             {% for component in asset.components %}
             <div class="component">
-                <h3>{{component.name}}: </h3>
+                <h3>{{component.name}}: - {{component.health_index}} - {{component.reliability}}%</h3>
                 {% for function in component.functions %}
                     <h3>{{function}}: {{function.health_index}}%</h3>
                     {% for fault in function.faults %}

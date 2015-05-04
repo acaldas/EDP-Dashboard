@@ -33,6 +33,9 @@ class Parameter(models.Model):
         else:
             return correspondences[0]
 
+    def is_function(self):
+        return self.function is not None
+
     def get_health_index(self, value):
         if value is None:
             return 0

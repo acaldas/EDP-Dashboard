@@ -36,7 +36,6 @@ class ParameterValueInline(admin.TabularInline):
             if request._obj_ is not None:
                 possible_parameters = map(lambda x: x.pk, request._obj_.asset_type.get_parameters() + request._obj_.asset_type.get_global_parameters())
                 field.queryset = field.queryset.filter(pk__in=possible_parameters)
-                print field.queryset
             else:
                 field.queryset = field.queryset.none()
 
@@ -61,7 +60,6 @@ class AssetAdmin(admin.ModelAdmin):
     def change_view(self, request, object_id, form_url='', extra_context=None):
         extra_context = extra_context or {}
         extra_context['parameters_values'] = json.dumps(Asset.objects.get(pk=object_id).get_paramaters_and_values())
-        print extra_context
 
         return super(AssetAdmin, self).change_view(request, object_id, form_url, extra_context=extra_context)
 
