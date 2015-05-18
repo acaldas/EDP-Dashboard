@@ -18,10 +18,10 @@ class Asset(models.Model):
         return date.today().year - self.fabrication_date
 
     def get_age_failure_probability(self):
-        return self.asset_type.aging_function.predict(self.get_age())
+        return self.asset_type.get_age_failure_probability(self.get_age())
 
     def get_paramaters_and_values(self):
-        parameters = self.asset_type.get_parameters() + self.asset_type.get_global_parameters()
+        parameters = self.asset_type.get_parameters() + self.asset_type.get_global_parameters() + self.asset_type.get_external_factors()
         result = dict.fromkeys(p.name for p in parameters)
         for p in parameters:
             result[p.name] = {
@@ -50,6 +50,40 @@ class Asset(models.Model):
 
         return min(values)
 
+    def get_fault_failure_probability(self, fault):
+        fault.health_index or self.get_fault_health_index(fault) or 0
+        age_fp = self.get_age_failure_probability() * fault.age_weight
+        condition_fp = (100 - fault.health_index) * fault.condition_weight
+        external_fp = 0
+        for external_factor in fault.get_external_factors():
+            print external_factor.__dict__
+            p = external_factor.parameter
+            p_values = self.get_parameter_values(p.pk)
+            print p_values
+            if p_values is not None and p_values[0] is not None and p_values[0].get_health_index() is not None:
+                value = p_values[0].get_health_index()
+            else:
+                value = 0
+            print value
+            external_fp += (100.0 - value) * external_factor.local_weight * external_factor.global_weight
+
+        print u'{}- age:{} condition:{} external:{}'.format(fault.name, age_fp, condition_fp, external_fp)
+
+        return round((age_fp + condition_fp + external_fp)/100.0, 3)
+
+    def get_asset_failure_probability(self, faults):
+        print faults
+        probabilities = [(f.failure_probability or self.get_fault_failure_probability(f))/100 for f in faults]
+        n = len(probabilities)
+        if n == 0:
+            return None
+        elif n == 1:
+            return probabilities[0]
+        elif n == 2:
+            return (probabilities[0]+probabilities[1]) - probabilities[0]*probabilities[1]
+
+
+
     def get_component_health_index(self, component):
         hi = 0
         contribution = 0
@@ -68,6 +102,8 @@ class Asset(models.Model):
         return hi/contribution*100.0
 
     def get_asset_info(self):
+        faults = []
+
         self.global_parameters = self.asset_type.get_global_parameters()
         for p in self.global_parameters:
             p.values = self.get_parameter_values(p.pk)
@@ -83,10 +119,15 @@ class Asset(models.Model):
                         p.values = self.get_parameter_values(p.pk)
 
                     fault.health_index = self.get_fault_health_index(fault)
+                    #failure probability
+                    fault.failure_probability = self.get_fault_failure_probability(fault)
+                    faults.append(fault)
                 f.health_index = sum(fault.global_weight/100*fault.health_index for fault in f.faults if fault.health_index is not None)
             c.health_index = self.get_component_health_index(c)
 
+            self.failure_probability = self.get_asset_failure_probability(faults)
         return self
+
 
     def __unicode__(self):
         return self.name

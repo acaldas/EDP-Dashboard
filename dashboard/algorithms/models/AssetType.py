@@ -39,9 +39,13 @@ class AssetType(models.Model):
     def get_global_parameters(self):
         return list(self.global_parameters.all())
 
+    def get_external_factors(self):
+        from Fault import ExternalFactor
+        return list([e.parameter for e in ExternalFactor.objects.filter(fault__function__component__asset=self)])
+
     #FAILURE PROBABILITY
     def get_age_failure_probability(self, age):
-        return self.aging_function.predict(self.get_age())
+        return self.aging_function.predict(age)
 
 
 class GlobalParameter(models.Model):

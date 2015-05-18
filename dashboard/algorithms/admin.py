@@ -4,7 +4,7 @@ from models.AssetType import Technology, AssetType, GlobalParameter
 from models.Parameter import Parameter, ValueCorrespondence, Parameters
 from models.Component import Component
 from models.Function import Function
-from models.Fault import Fault
+from models.Fault import Fault, ExternalFactor, Faults
 
 
 class TechnologyAdmin(admin.ModelAdmin):
@@ -79,3 +79,19 @@ class AssetTypeAdmin(NestedModelAdmin):
     save_as = True
 
 admin.site.register(AssetType, AssetTypeAdmin)
+
+
+class ExternalFactorInline(admin.TabularInline):
+    model = ExternalFactor
+    extra = 0
+    save_as = True
+
+
+class FaultsAdmin(admin.ModelAdmin):
+    model = Faults
+    inlines = [ExternalFactorInline]
+
+    def queryset(self, request):
+        return self.model.objects.all()
+
+admin.site.register(Faults, FaultsAdmin)

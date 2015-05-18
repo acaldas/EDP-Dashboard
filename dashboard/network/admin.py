@@ -34,7 +34,9 @@ class ParameterValueInline(admin.TabularInline):
 
         if db_field.name == 'parameter':
             if request._obj_ is not None:
-                possible_parameters = map(lambda x: x.pk, request._obj_.asset_type.get_parameters() + request._obj_.asset_type.get_global_parameters())
+                possible_parameters = map(lambda x: x.pk, request._obj_.asset_type.get_parameters()
+                                          + request._obj_.asset_type.get_global_parameters()
+                                          + request._obj_.asset_type.get_external_factors())
                 field.queryset = field.queryset.filter(pk__in=possible_parameters)
             else:
                 field.queryset = field.queryset.none()
