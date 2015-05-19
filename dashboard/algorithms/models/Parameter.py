@@ -2,13 +2,14 @@ __author__ = 'Afonso'
 
 from django.db import models
 from Fault import Fault
-
+from AssetType import Technology
 
 class Parameter(models.Model):
 
     name = models.CharField(max_length=200)
     fault = models.ForeignKey(Fault, blank=True, null=True)
     function = models.ForeignKey('utils.RegressionFunction', null=True, blank=True)
+    technology = models.ForeignKey(Technology, null=True, blank=True)
 
     def __unicode__(self):
         return u'{}'.format(self.name)

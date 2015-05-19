@@ -8,9 +8,8 @@
     <h1>{{asset.name}}</h1>
     <div>
         <h2>{{asset.asset_type}}</h2>
-        <div class="failure_probabilty">
-            <h2>Failure Probability: {{asset.failure_probability}}</h2>
-        </div>
+        <h2>Failure Probability: {{asset.failure_probability}}</h2>
+        <h2>Remaining Lifetime: {{asset.remaining_lifetime}}</h2>
         <div class="components">
             {% with asset_type=asset.asset_type %}
             {% for component in asset.components %}

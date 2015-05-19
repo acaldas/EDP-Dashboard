@@ -7,13 +7,6 @@ from models.Function import Function
 from models.Fault import Fault, ExternalFactor, Faults
 
 
-class TechnologyAdmin(admin.ModelAdmin):
-    model = Technology
-    save_as = True
-
-admin.site.register(Technology, TechnologyAdmin)
-
-
 class ValueCorrespondenceInline(NestedTabularInline):
     model = ValueCorrespondence
     fk_name = 'parameter'
@@ -21,19 +14,27 @@ class ValueCorrespondenceInline(NestedTabularInline):
     save_as = True
 
 
-class ParameterInline(NestedStackedInline):
+class ParameterInline(NestedTabularInline):
     model = Parameter
     inlines = [ValueCorrespondenceInline]
     fk_name = 'fault'
     extra = 1
     save_as = True
 
-#class FaultAdmin(NestedModelAdmin):
-#    model = Fault
-#    inlines = [ParameterInline]
+
+class AgingParameterInline(NestedTabularInline):
+    model = Parameter
+    inlines = [ValueCorrespondenceInline]
+    extra = 1
+    save_as = True
 
 
-#admin.site.register(Fault, FaultAdmin)
+class TechnologyAdmin(NestedModelAdmin):
+    model = Technology
+    inlines = [AgingParameterInline]
+    save_as = True
+
+admin.site.register(Technology, TechnologyAdmin)
 
 class FaultInline(NestedStackedInline):
     model = Fault

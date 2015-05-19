@@ -8,7 +8,6 @@ from django.db import models
 class Technology(models.Model):
     name = models.CharField(max_length=200)
     max_lifetime = models.IntegerField()
-    obsolescence_lifetime = models.IntegerField()
 
     class Meta:
         verbose_name_plural = "Technologies"
@@ -46,6 +45,10 @@ class AssetType(models.Model):
     #FAILURE PROBABILITY
     def get_age_failure_probability(self, age):
         return self.aging_function.predict(age)
+
+    #REMAINING LIFETIME
+    def get_aging_parameters(self):
+        return list(self.technology.parameter_set.all())
 
 
 class GlobalParameter(models.Model):

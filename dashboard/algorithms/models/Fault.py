@@ -16,6 +16,7 @@ class Fault(models.Model):
     def get_external_factors(self):
         #return list(self.external_factors.all())
         return list(ExternalFactor.objects.filter(fault=self))
+
     def __unicode__(self):
         return self.name
 

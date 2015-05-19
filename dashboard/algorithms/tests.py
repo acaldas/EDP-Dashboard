@@ -1,9 +1,9 @@
 
 from django.test import TestCase
-from models.AssetType import Asset, AssetType, Technology
+from models.AssetType import AssetType, Technology
 from models.Parameter import Parameter, ValueCorrespondence
 from utils.models import RegressionFunction, FunctionValue
-
+from network.models import Asset
 
 class AssetTestCase(TestCase):
     def setUp(self):

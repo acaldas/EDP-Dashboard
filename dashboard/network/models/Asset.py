@@ -5,23 +5,27 @@ from django.db import models
 from datetime import date
 from django.utils.encoding import smart_str
 from algorithms.models.AssetType import GlobalParameter
+from itertools import combinations
+
 
 
 class Asset(models.Model):
     name = models.CharField(max_length=200)
-    fabrication_date = models.IntegerField()
+    fabrication_year = models.IntegerField()
+    obsolescence_lifetime = models.IntegerField()
     panel = models.CharField(max_length=200, blank=True, null=True)
     asset_type = models.ForeignKey('algorithms.AssetType')
     parameters = models.ManyToManyField('algorithms.Parameter', through='network.ParameterValue')
 
     def get_age(self):
-        return date.today().year - self.fabrication_date
+        return date.today().year - self.fabrication_year
 
     def get_age_failure_probability(self):
         return self.asset_type.get_age_failure_probability(self.get_age())
 
     def get_paramaters_and_values(self):
-        parameters = self.asset_type.get_parameters() + self.asset_type.get_global_parameters() + self.asset_type.get_external_factors()
+        parameters = self.asset_type.get_parameters() + self.asset_type.get_global_parameters() \
+                     + self.asset_type.get_external_factors() + self.asset_type.get_aging_parameters()
         result = dict.fromkeys(p.name for p in parameters)
         for p in parameters:
             result[p.name] = {
@@ -50,6 +54,9 @@ class Asset(models.Model):
 
         return min(values)
 
+
+
+    #FAILURE PROBABILITY
     def get_fault_failure_probability(self, fault):
         fault.health_index or self.get_fault_health_index(fault) or 0
         age_fp = self.get_age_failure_probability() * fault.age_weight
@@ -72,24 +79,28 @@ class Asset(models.Model):
         return round((age_fp + condition_fp + external_fp)/100.0, 3)
 
     def get_asset_failure_probability(self, faults):
-        print faults
         probabilities = [(f.failure_probability or self.get_fault_failure_probability(f))/100 for f in faults]
         n = len(probabilities)
         if n == 0:
             return None
         elif n == 1:
-            return probabilities[0]
+            probability = probabilities[0]
         elif n == 2:
-            return (probabilities[0]+probabilities[1]) - probabilities[0]*probabilities[1]
+            probability = (probabilities[0]+probabilities[1]) - probabilities[0]*probabilities[1]
+        else:
+            intersection = 0
+            for a, b in combinations(probabilities, 2):
+                intersection += a*b
+            probability = sum(probabilities) - intersection + reduce(lambda x, y: x*y, probabilities)
 
-
+        return round(probability, 3)
 
     def get_component_health_index(self, component):
         hi = 0
         contribution = 0
         for p in self.global_parameters:
             global_weight = self.get_global_parameter_info(p.id).global_weight
-            if p.values[0] is not None and p.values[0].get_health_index() is not None:
+            if p.values and p.values[0] is not None and p.values[0].get_health_index() is not None:
                 contribution += global_weight
                 hi += p.values[0].get_health_index() * global_weight/100.0
 
@@ -101,9 +112,31 @@ class Asset(models.Model):
         component.reliability = contribution
         return hi/contribution*100.0
 
+
+
+    #REMAINING LIFETIME
+    def get_expected_statistic_life(self):
+        return max(self.asset_type.technology.max_lifetime - self.get_age(), 0)
+
+    def get_lifetime_reduction(self):
+        lifetime_reductions = []
+        for p in self.asset_type.get_aging_parameters():
+            p.values = self.get_parameter_values(p.pk)
+            if p.values and p.values[0] is not None and p.values[0].get_health_index() is not None:
+                lifetime_reductions.append(p.values[0].get_health_index())
+
+        if not len(lifetime_reductions):
+            return None
+        return max(lifetime_reductions)
+
+    def get_reducted_lifetime(self):
+        return max(self.get_expected_statistic_life() - (self.get_lifetime_reduction() or 0), 0)
+
+    def get_remaining_lifetime(self):
+        return min(self.obsolescence_lifetime, self.get_reducted_lifetime())
+
     def get_asset_info(self):
         faults = []
-
         self.global_parameters = self.asset_type.get_global_parameters()
         for p in self.global_parameters:
             p.values = self.get_parameter_values(p.pk)
@@ -126,8 +159,8 @@ class Asset(models.Model):
             c.health_index = self.get_component_health_index(c)
 
             self.failure_probability = self.get_asset_failure_probability(faults)
+            self.remaining_lifetime = self.get_remaining_lifetime()
         return self
-
 
     def __unicode__(self):
         return self.name
