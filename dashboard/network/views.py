@@ -5,6 +5,10 @@ from django.template import RequestContext
 from django.shortcuts import render, get_object_or_404
 
 
+def home(request):
+    return render(request, 'home.html')
+
+
 def get_asset_parameters_and_possible_values(request, asset_id):
     asset = Asset.objects.get(pk= asset_id)
     return JsonResponse(asset.get_paramaters_and_values())

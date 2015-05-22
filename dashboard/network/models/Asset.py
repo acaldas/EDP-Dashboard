@@ -32,7 +32,6 @@ class Asset(models.Model):
                 'values': [{'id': v.id, 'value': v.value} for v in p.get_possible_correspondences()],
                 'function': p.is_function()
             }
-            print result[p.name]
         return result
 
     def get_parameter_values(self, parameter_id):
@@ -63,18 +62,15 @@ class Asset(models.Model):
         condition_fp = (100 - fault.health_index) * fault.condition_weight
         external_fp = 0
         for external_factor in fault.get_external_factors():
-            print external_factor.__dict__
             p = external_factor.parameter
             p_values = self.get_parameter_values(p.pk)
-            print p_values
+
             if p_values is not None and p_values[0] is not None and p_values[0].get_health_index() is not None:
                 value = p_values[0].get_health_index()
             else:
                 value = 0
-            print value
-            external_fp += (100.0 - value) * external_factor.local_weight * external_factor.global_weight
 
-        print u'{}- age:{} condition:{} external:{}'.format(fault.name, age_fp, condition_fp, external_fp)
+            external_fp += (100.0 - value) * external_factor.local_weight * external_factor.global_weight
 
         return round((age_fp + condition_fp + external_fp)/100.0, 3)
 
@@ -110,9 +106,23 @@ class Asset(models.Model):
                     contribution += fault.global_weight
                     hi += fault.health_index * fault.global_weight/100.0
         component.reliability = contribution
+        component.global_health_index = hi
         return hi/contribution*100.0
 
+    def get_health_index(self, components):
+        hi = 0
+        contribution = 0
+        for p in self.global_parameters:
+            global_weight = self.get_global_parameter_info(p.id).global_weight
+            if p.values and p.values[0] is not None and p.values[0].get_health_index() is not None:
+                hi += p.values[0].get_health_index() * global_weight/100.0
+                contribution += global_weight
 
+        for component in components:
+            hi += component.global_health_index
+            contribution += component.reliability
+
+        return hi/contribution*100.0
 
     #REMAINING LIFETIME
     def get_expected_statistic_life(self):
@@ -158,6 +168,7 @@ class Asset(models.Model):
                 f.health_index = sum(fault.global_weight/100*fault.health_index for fault in f.faults if fault.health_index is not None)
             c.health_index = self.get_component_health_index(c)
 
+            self.health_index = self.get_health_index(self.components)
             self.failure_probability = self.get_asset_failure_probability(faults)
             self.remaining_lifetime = self.get_remaining_lifetime()
         return self
