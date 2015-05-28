@@ -1,0 +1,38 @@
+.panel-heading {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+
+  i {
+    float: left;
+    font-size: 22px;
+    line-height: 20px;
+  }
+  h3 {
+    margin: 0px 0px 0px 10px;
+    float: left;
+    font-size: 22px;
+  }
+
+}
+
+.reliability-indicator {
+  .reliability-title {
+    margin: auto;
+    width: 120px;
+    i {
+      float: left;
+      font-size: 18px;
+    }
+    h3 {
+      float: left;
+      margin: 0 0 0 5px;
+      font-size: 18px;
+    }
+  }
+}

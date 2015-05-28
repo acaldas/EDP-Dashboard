@@ -23,6 +23,9 @@ class Asset(models.Model):
     def get_age_failure_probability(self):
         return self.asset_type.get_age_failure_probability(self.get_age())
 
+    def get_max_age(self):
+        return self.asset_type.technology.max_lifetime
+
     def get_paramaters_and_values(self):
         parameters = self.asset_type.get_parameters() + self.asset_type.get_global_parameters() \
                      + self.asset_type.get_external_factors() + self.asset_type.get_aging_parameters()
@@ -89,7 +92,7 @@ class Asset(models.Model):
                 intersection += a*b
             probability = sum(probabilities) - intersection + reduce(lambda x, y: x*y, probabilities)
 
-        return round(probability, 3)
+        return round(probability*100, 0)
 
     def get_component_health_index(self, component):
         hi = 0
@@ -101,10 +104,13 @@ class Asset(models.Model):
                 hi += p.values[0].get_health_index() * global_weight/100.0
 
         for f in component.functions:
+            component.parameters_reliability = 0
             for fault in f.faults:
                 if fault.health_index is not None:
                     contribution += fault.global_weight
                     hi += fault.health_index * fault.global_weight/100.0
+                    component.parameters_reliability += fault.global_weight
+
         component.reliability = contribution
         component.global_health_index = hi
         return hi/contribution*100.0
@@ -117,11 +123,14 @@ class Asset(models.Model):
             if p.values and p.values[0] is not None and p.values[0].get_health_index() is not None:
                 hi += p.values[0].get_health_index() * global_weight/100.0
                 contribution += global_weight
+                print "{}:{}".format(p.name, global_weight)
 
         for component in components:
             hi += component.global_health_index
-            contribution += component.reliability
+            contribution += component.parameters_reliability
+            print "{}:{}".format(component.name, component.parameters_reliability)
 
+        self.reliability = contribution
         return hi/contribution*100.0
 
     #REMAINING LIFETIME
@@ -153,14 +162,17 @@ class Asset(models.Model):
 
         self.components = self.asset_type.component_set.all()
         for c in self.components:
+            c.num_parameters = 0
             c.functions = c.function_set.all()
             for f in c.functions:
                 f.faults = f.fault_set.all()
+                f.num_parameters = 0
                 for fault in f.faults:
                     fault.parameters = fault.parameter_set.all()
                     for p in fault.parameters:
                         p.values = self.get_parameter_values(p.pk)
-
+                        c.num_parameters += 1
+                        f.num_parameters += 1
                     fault.health_index = self.get_fault_health_index(fault)
                     #failure probability
                     fault.failure_probability = self.get_fault_failure_probability(fault)

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{asset.name}}</title>
+</head>
+<body>
+    <h1>{{asset.name}}</h1>
+    <div>
+        <h2>{{asset.asset_type}}</h2>
+        <h2>Health Index: {{asset.health_index}}</h2>
+        <h2>Failure Probability: {{asset.failure_probability}}</h2>
+        <h2>Remaining Lifetime: {{asset.remaining_lifetime}}</h2>
+        <div class="components">
+            {% with asset_type=asset.asset_type %}
+            {% for component in asset.components %}
+            <div class="component">
+                <h3>{{component.name}}: - {{component.health_index}} - {{component.reliability}}%</h3>
+                {% for function in component.functions %}
+                    <h3>{{function}}: {{function.health_index}}</h3>
+                    {% for fault in function.faults %}
+                        <h3>{{fault}}: {{fault.health_index}}</h3>
+                        <h3>Failure Probability: {{fault.failure_probability}}%</h3>
+                        {% for parameter in fault.parameters %}
+                            <div class="parameter">
+                                {{parameter.name}} - {% firstof parameter.values.0.value_interval parameter.values.0.value %} - <b>{{parameter.values.0.get_health_index}}</b>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            {% endwith %}
+        </div>
+        <div class="global_parameters">
+             {% for parameter in asset.global_parameters %}
+                <h3>{{parameter.name}} - {% firstof parameter.values.0.value_interval parameter.values.0.value %} - <b>{{parameter.values.0.get_health_index}}</b></h3>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
