@@ -6,4 +6,21 @@ register = template.Library()
 
 @register.filter
 def percentage(value):
-    return "{}%".format(int(round(value,0)))
+    return "{}%".format(int(round(value, 0)))
+
+@register.filter
+def percentage_to_color(value):
+    class_value = int(round(value/5.0, 0))
+    if class_value < 1:
+        class_value = 1
+    elif class_value > 19:
+        class_value = 19
+
+    return class_value
+
+@register.filter(name='list_iter')
+def list_iter(lists):
+    list_a, list_b, list_c = lists
+
+    for x, y, z in zip(list_a, list_b, list_c):
+        yield (x, y, z)

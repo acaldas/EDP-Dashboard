@@ -1,0 +1,34 @@
+$colors: #5CB85C, #6EBD56, #80C250, #92C74B, #A4CC45, #B6D140, #C8D63A, #DADB35, #ECE02F,
+            #FEE62A, #F9D52E, #F5C532, #F1B536, #EDA43A, #E9943E, #E58442, #E17346, #DD634A, #D9534F;
+
+@for $i from 1 to length($colors)+1 {
+  .color-#{$i} { background-color: nth($colors, $i);}
+}
+
+.fp-panel {
+  padding: 20px;
+   h4 {
+      margin-left: 0px;
+      &:first-child {
+        margin-top: 0px;
+      }
+      &:nth-child(n+3) {
+          margin-top: 30px;
+      }
+    }
+  .progress {
+    position: relative;
+
+    span.failure-progress {
+      position: absolute;
+      left: calc(50% - 40px);
+      width: 40px;
+      text-align: center;
+      font-weight: bold;
+    }
+  }
+
+  table {
+    margin-top: 5px;
+  }
+}

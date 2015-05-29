@@ -605,7 +605,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Índice de Vida
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Índice de Saúde
                         </div>
                         <div class="hi-table">
                             <table class="table-bordered table">
@@ -615,7 +615,7 @@
                                         <th>Função</th>
                                         <th>Falha</th>
                                         <th>Parâmetro</th>
-                                        <th>Condição</th>
+                                        <th>Valor</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -631,7 +631,7 @@
                                                            <tr>
                                                         {% endif %}
                                                        <td>{{ parameter }}</td>
-                                                       <td>{% with parameter.values|first as value %}{{ value.get_health_index|percentage }}{% endwith %}</td></tr>
+                                                       <td>{% with parameter.values|first as value %}{{ value.get_value }}{% endwith %}</td></tr>
                                                     {% endfor %}
                                                 {% endfor %}
                                            {% endfor %}
@@ -641,7 +641,7 @@
                                         <tr>
                                             <td colspan="3">Parâmetro geral</td>
                                             <td>{{parameter}}</td>
-                                            <td>{% with parameter.values|first as value %}{{ value.get_health_index|percentage }}{% endwith %}</td></tr>
+                                            <td>{% with parameter.values|first as value %}{{ value.get_value }}{% endwith %}</td></tr>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -656,15 +656,58 @@
                         <div class="panel-heading">
                             <i class="fa fa-bar-chart-o fa-fw"></i> Probabilidade de Falha
                         </div>
-                        <div class="hi-table">
-                            <meter mi ="0" max="100" value="{{asset.failure_probability}}">{{asset.failure_probability|percentage}}</meter>
+                        <div class="fp-panel clearfix">
+                            <h4>Falha Geral:</h4>
+                            <div class="progress">
+                              <span class="failure-progress">{{asset.failure_probability|percentage}}</span>
+                              <div class="progress-bar progress-bar-striped color-{{asset.failure_probability|percentage_to_color}}" role="progressbar" aria-valuenow="{{asset.failure_probability}}" aria-valuemin="0" aria-valuemax="100" style="width: {{asset.failure_probability}}%">
+                              </div>
+                            </div>
+                            <hr>
                             {% for component in asset.components %}
                                 {% for function in component.functions %}
+                                    <div class="col-lg-6 clearfix" style="padding-left: 0px">
                                     {% for fault in function.faults %}
-                                        <meter min="0" max="100" value="{{fault.failure_probability}}">{{fault.failure_probability|percentage}}</meter>
+                                            <h4>{{fault}}:</h4>
+                                            <div class="progress">
+                                              <span class="failure-progress">{{fault.failure_probability|percentage}}</span>
+                                              <div class="progress-bar progress-bar-striped color-{{fault.failure_probability|percentage_to_color}}" role="progressbar" aria-valuenow="{{fault.failure_probability}}" aria-valuemin="0" aria-valuemax="100" style="width: {{fault.failure_probability}}%">
+                                              </div>
+                                            </div>
                                     {% endfor %}
+                                    </div>
+                                    {% if forloop.first %}
+                                    <div class="external-factors col-lg-5 col-lg-offset-1 clearfix">
+                                        <table class="table-bordered table">
+                                            <thead>
+                                                <tr></tr><th colspan="2">Fatores Externos</th></tr>
+                                            </thead>
+                                            <tbody>
+                                    {% endif %}
+                                        {% for external_factor in asset.external_factors %}
+                                            <tr><td>{{external_factor}}</td><td>{% with external_factor.values|first as value %}{{ value.get_value }}{% endwith %}</td></tr>
+                                        {% endfor %}
+                                    {% if forloop.last %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {% endif %}
+
                                 {% endfor %}
                             {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-heartbeat fa-fw"></i> Vida restante
+                        </div>
+                        <div class="life-panel clearfix">
+                            <h4>Reducted Lifetime</h4>
+                            <h4>Obsolescence Lifetime</h4>
+                            <h4>Aging Parameters</h4>
                         </div>
                     </div>
                 </div>

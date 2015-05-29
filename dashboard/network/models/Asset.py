@@ -123,12 +123,10 @@ class Asset(models.Model):
             if p.values and p.values[0] is not None and p.values[0].get_health_index() is not None:
                 hi += p.values[0].get_health_index() * global_weight/100.0
                 contribution += global_weight
-                print "{}:{}".format(p.name, global_weight)
 
         for component in components:
             hi += component.global_health_index
             contribution += component.parameters_reliability
-            print "{}:{}".format(component.name, component.parameters_reliability)
 
         self.reliability = contribution
         return hi/contribution*100.0
@@ -159,6 +157,9 @@ class Asset(models.Model):
         self.global_parameters = self.asset_type.get_global_parameters()
         for p in self.global_parameters:
             p.values = self.get_parameter_values(p.pk)
+        self.external_factors = list(set(self.asset_type.get_external_factors()))
+        for parameter in self.external_factors:
+            parameter.values = self.get_parameter_values(parameter.pk)
 
         self.components = self.asset_type.component_set.all()
         for c in self.components:
@@ -177,6 +178,7 @@ class Asset(models.Model):
                     #failure probability
                     fault.failure_probability = self.get_fault_failure_probability(fault)
                     faults.append(fault)
+
                 f.health_index = sum(fault.global_weight/100*fault.health_index for fault in f.faults if fault.health_index is not None)
             c.health_index = self.get_component_health_index(c)
 
@@ -209,9 +211,13 @@ class ParameterValue(models.Model):
             return self.value_interval.health_index
         return None
 
-    def __unicode__(self):
+    def get_value(self):
         if not self.value_interval:
             if not self.value:
                 return '-----'
-            return str(self.parameter).decode('utf-8') + ' - ' + str(self.value).decode('utf-8')
-        return str(self.parameter).decode('utf-8') + ' - ' + str(self.value_interval).decode('utf-8')
+            return str(self.value).decode('utf-8')
+        return str(self.value_interval).decode('utf-8')
+
+    def __unicode__(self):
+
+        return str(self.parameter).decode('utf-8') + ' - ' + self.get_value()
