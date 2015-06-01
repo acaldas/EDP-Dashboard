@@ -24,3 +24,13 @@ def list_iter(lists):
 
     for x, y, z in zip(list_a, list_b, list_c):
         yield (x, y, z)
+
+@register.filter(name='get_parameter_color')
+def get_parameter_color(value):
+    if value:
+        if value.get_warning():
+            return "rgb(254, 230, 42);"
+        elif value.get_alert():
+            return "#d9534F"
+
+    return "inherit"

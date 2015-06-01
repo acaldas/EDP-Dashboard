@@ -386,98 +386,7 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-comments fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">26</div>
-                                    <div>New Comments!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-green">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-tasks fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">12</div>
-                                    <div>New Tasks!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-yellow">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-shopping-cart fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">124</div>
-                                    <div>New Orders!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-red">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-support fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">13</div>
-                                    <div>Support Tickets!</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- /.row -->
-              <div class="row">
+              <div class="row row-eq-height">
                 <div class="col-lg-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -486,16 +395,14 @@
                         </div>
                         <div class="panel-body">
                             <div class="col-lg-9">
-                                <div id="gauge" style="width:400px; height:320px" data-hi="{{asset.health_index}}">
+                                <div id="hi-gauge" style="width:400px; height:320px" data-hi="{{asset.health_index|floatformat:0}}">
                                 </div>
                             </div>
                             <div class="col-lg-3 reliability-indicator">
-                                <div class="reliability-title clearfix">
-                                    <i class="fa fa-check-square fa-fw"></i>
-                                    <h3>Confiança</h3>
-                                </div>
+
                                 <div class="panel-bar light-grey-bg">
                                     <div class="spacer-xs">
+                                        <p class="center-align-text bar-title">Confiança</p>
                                         <p class="center-align-text">{{asset.reliability|percentage}}</p>
                                         <ul class="asset-progress-bar" data-value={{asset.reliability}} data-max=100>
                                             <li>&nbsp;</li>
@@ -531,35 +438,11 @@
                         <h3>Probabilidade de Falha</h3>
                     </div>
                     <div class="panel-body panel-failure-probability">
-                        <div class="row">
                             <div class="circular-progress">
                                 <div id="prog-contain" data-value="{{asset.failure_probability}}">
                                     <div class="prog"></div>
                                 </div>
                             </div>
-                        </div>
-<!--                        <div class="row">
-                            <div class="col-lg-4 panel-progress-radial-secondary">
-                                <div class="progress-radial progress-25">
-                                    <div class="overlay">25%</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 panel-progress-radial-secondary">
-                                <div class="progress-radial progress-25">
-                                    <div class="overlay">25%</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 panel-progress-radial-secondary">
-                                <div class="progress-radial progress-25">
-                                    <div class="overlay">25%</div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 panel-progress-radial-secondary">
-                                <div class="progress-radial progress-25">
-                                    <div class="overlay">25%</div>
-                                </div>
-                            </div>
-                        </div>-->
                     </div>
                   </div>
                 </div>
@@ -570,7 +453,7 @@
                         <i class="fa fa-heartbeat fa-fw"></i>
                         <h3>Vida restante</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body panel-remaining-lifetime">
                         <div class="panel-bar light-grey-bg">
                             <div class="spacer-xs">
                                 <p class="center-align-text">{{asset.remaining_lifetime|floatformat:"-1"}} ano{{ asset.remaining_lifetime|pluralize }}</p>
@@ -601,7 +484,63 @@
                   </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row row-eq-height alerts">
+                {% for component in asset.components %}
+                    {% for function in component.functions %}
+                        {% for fault in function.faults %}
+                            {% for parameter in fault.parameters %}
+                        {% with parameter.values|first as value %}
+                        {% if value.get_alert %}
+                        <div class="col-lg-3">
+                            <div class="panel panel-red">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-1">
+                                            <i class="fa fa-bolt fa-5x"></i>
+                                        </div>
+                                        <div class="col-xs-11">
+                                            <div class="huge">{{value.get_alert}}</div>
+                                            <div>{{parameter}}: {{value.get_value}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+                {% for component in asset.components %}
+                    {% for function in component.functions %}
+                        {% for fault in function.faults %}
+                            {% for parameter in fault.parameters %}
+                        {% with parameter.values|first as value %}
+                        {% if value.get_warning %}
+                        <div class="col-lg-3">
+                            <div class="panel panel-yellow">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-1">
+                                        <i class="fa fa-exclamation-triangle fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-11">
+                                        <div class="huge">{{value.get_warning}}</div>
+                                        <div>{{parameter}}: {{value.get_value}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                            {% endfor %}
+                        {% endfor %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <div class="row row-eq-height">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -621,17 +560,20 @@
                                 <tbody>
                                     {% for component in asset.components %}
                                        <tr>
-                                           <td rowspan="{{component.num_parameters}}">{{ component }} - {{component.health_index}}</td>
+                                           <td rowspan="{{component.num_parameters}}">{{ component }} - {{component.health_index|floatformat:"-2"}}</td>
                                            {% for function in component.functions %}
-                                                <td rowspan="{{function.num_parameters}}">{{ function }} - {{function.health_index}}</td>
+                                                <td rowspan="{{function.num_parameters}}">{{ function }} - {{function.health_index|floatformat:"-2"}}</td>
                                                 {% for fault in function.faults %}
-                                                    <td rowspan="{{fault.parameters|length}}">{{ fault }} - {{fault.health_index}}</td>
+                                                    <td rowspan="{{fault.parameters|length}}">{{ fault }} - {{fault.health_index|floatformat:"-2"}}</td>
                                                     {% for parameter in fault.parameters %}
-                                                        {% if not forloop.first %}
-                                                           <tr>
-                                                        {% endif %}
+                                                    {% if not forloop.first %}
+                                                       <tr>
+                                                    {% endif %}
                                                        <td>{{ parameter }}</td>
-                                                       <td>{% with parameter.values|first as value %}{{ value.get_value }}{% endwith %}</td></tr>
+                                                       {% with parameter.values|first as value %}
+                                                       <td style="color:{{value|get_parameter_color}}">{% if value %}{{value.get_value}}{{value.get_health_index}}{% else %}Desconhecido{% endif %}</td>
+                                                       {% endwith %}
+                                                       </tr>
                                                     {% endfor %}
                                                 {% endfor %}
                                            {% endfor %}
@@ -641,7 +583,7 @@
                                         <tr>
                                             <td colspan="3">Parâmetro geral</td>
                                             <td>{{parameter}}</td>
-                                            <td>{% with parameter.values|first as value %}{{ value.get_value }}{% endwith %}</td></tr>
+                                            <td>{% with parameter.values|first as value %}{{ value.get_value }}{{ value.get_health_index }}{% endwith %}</td></tr>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -652,49 +594,47 @@
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default clearfix">
                         <div class="panel-heading">
                             <i class="fa fa-bar-chart-o fa-fw"></i> Probabilidade de Falha
                         </div>
                         <div class="fp-panel clearfix">
-                            <h4>Falha Geral:</h4>
-                            <div class="progress">
-                              <span class="failure-progress">{{asset.failure_probability|percentage}}</span>
-                              <div class="progress-bar progress-bar-striped color-{{asset.failure_probability|percentage_to_color}}" role="progressbar" aria-valuenow="{{asset.failure_probability}}" aria-valuemin="0" aria-valuemax="100" style="width: {{asset.failure_probability}}%">
-                              </div>
-                            </div>
-                            <hr>
-                            {% for component in asset.components %}
-                                {% for function in component.functions %}
-                                    <div class="col-lg-6 clearfix" style="padding-left: 0px">
-                                    {% for fault in function.faults %}
-                                            <h4>{{fault}}:</h4>
-                                            <div class="progress">
-                                              <span class="failure-progress">{{fault.failure_probability|percentage}}</span>
-                                              <div class="progress-bar progress-bar-striped color-{{fault.failure_probability|percentage_to_color}}" role="progressbar" aria-valuenow="{{fault.failure_probability}}" aria-valuemin="0" aria-valuemax="100" style="width: {{fault.failure_probability}}%">
-                                              </div>
-                                            </div>
+                            <div class="col-lg-7">
+                                <h4>Falha Geral:</h4>
+                                <div class="progress">
+                                  <span class="failure-progress">{{asset.failure_probability|percentage}}</span>
+                                  <div class="progress-bar progress-bar-striped color-{{asset.failure_probability|percentage_to_color}}" role="progressbar" aria-valuenow="{{asset.failure_probability}}" aria-valuemin="0" aria-valuemax="100" style="width: {{asset.failure_probability}}%">
+                                  </div>
+                                </div>
+                                <hr>
+                                {% for component in asset.components %}
+                                    {% for function in component.functions %}
+                                        <div class="col-lg-11 clearfix" style="padding-left: 0px">
+                                        {% for fault in function.faults %}
+                                                <h4>{{fault}}:</h4>
+                                                <div class="progress">
+                                                  <span class="failure-progress">{{fault.failure_probability|percentage}}</span>
+                                                  <div class="progress-bar progress-bar-striped color-{{fault.failure_probability|percentage_to_color}}" role="progressbar" aria-valuenow="{{fault.failure_probability}}" aria-valuemin="0" aria-valuemax="100" style="width: {{fault.failure_probability}}%">
+                                                  </div>
+                                                </div>
+                                        {% endfor %}
+                                        </div>
+
                                     {% endfor %}
-                                    </div>
-                                    {% if forloop.first %}
-                                    <div class="external-factors col-lg-5 col-lg-offset-1 clearfix">
-                                        <table class="table-bordered table">
-                                            <thead>
-                                                <tr></tr><th colspan="2">Fatores Externos</th></tr>
-                                            </thead>
-                                            <tbody>
-                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                                <div class="external-factors col-lg-5 clearfix">
+                                    <table class="table-bordered table">
+                                        <thead>
+                                            <tr></tr><th colspan="2">Fatores Externos</th></tr>
+                                        </thead>
+                                        <tbody>
                                         {% for external_factor in asset.external_factors %}
                                             <tr><td>{{external_factor}}</td><td>{% with external_factor.values|first as value %}{{ value.get_value }}{% endwith %}</td></tr>
                                         {% endfor %}
-                                    {% if forloop.last %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    {% endif %}
-
-                                {% endfor %}
-                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -705,9 +645,27 @@
                             <i class="fa fa-heartbeat fa-fw"></i> Vida restante
                         </div>
                         <div class="life-panel clearfix">
-                            <h4>Reducted Lifetime</h4>
-                            <h4>Obsolescence Lifetime</h4>
-                            <h4>Aging Parameters</h4>
+
+                            <div class="col-lg-3">
+                                <h3>Vida Restante</h3>
+                                <h2>{{asset.get_reducted_lifetime|floatformat:"-2"}} ano{{asset.get_reducted_lifetime|pluralize}}</h2>
+                            </div>
+                            <div class="col-lg-3">
+                                <h3>Obsolescência</h3>
+                                <h2>{{asset.obsolescence_lifetime|floatformat:"-2"}} ano{{asset.obsolescence_lifetime|pluralize}}</h2>
+                            </div>
+                            <div class="col-lg-6 aging-parameters">
+                                <table class="table-bordered table aging-table">
+                                    <thead>
+                                        <tr></tr><th colspan="2">Parâmetros de Envelhecimento</th></tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for aging_parameter in asset.aging_parameters %}
+                                        <tr><td>{{aging_parameter}}</td><td>{% with aging_parameter.values|first as value %}{{ value.get_value }}{% endwith %}</td></tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

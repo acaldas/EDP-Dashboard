@@ -1,3 +1,4 @@
+from django import forms
 from django.contrib import admin
 from nested_inline.admin import NestedStackedInline, NestedTabularInline, NestedModelAdmin
 from models.AssetType import Technology, AssetType, GlobalParameter
@@ -5,6 +6,28 @@ from models.Parameter import Parameter, ValueCorrespondence, Parameters
 from models.Component import Component
 from models.Function import Function
 from models.Fault import Fault, ExternalFactor, Faults
+
+
+class FaultsForm(forms.ModelForm):
+    class Meta:
+        model = Faults
+        fields = "__all__"
+
+    parameters = forms.ModelMultipleChoiceField(label="Parameters", queryset=Parameter.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        super(FaultsForm, self).__init__(*args, **kwargs)
+        if self.instance:
+            self.fields['parameters'].initial = self.instance.parameter_set.all()
+
+    def save(self, *args, **kwargs):
+        # FIXME: 'commit' argument is not handled
+        # TODO: Wrap reassignments into transaction
+        # NOTE: Previously assigned Foos are silently reset
+        instance = super(FaultsForm, self).save(commit=False)
+        self.fields['parameters'].initial.update(fault=None)
+        self.cleaned_data['parameters'].update(fault=instance)
+        return instance
 
 
 class ValueCorrespondenceInline(NestedTabularInline):
@@ -36,9 +59,10 @@ class TechnologyAdmin(NestedModelAdmin):
 
 admin.site.register(Technology, TechnologyAdmin)
 
-class FaultInline(NestedStackedInline):
+class FaultInline(NestedTabularInline):
     model = Fault
-    inlines = [ParameterInline]
+    inlines = []
+    form = FaultsForm
     fk_name = 'function'
     extra = 0
     save_as = True
@@ -87,10 +111,10 @@ class ExternalFactorInline(admin.TabularInline):
     extra = 0
     save_as = True
 
-
 class FaultsAdmin(admin.ModelAdmin):
     model = Faults
-    inlines = [ExternalFactorInline]
+    form = FaultsForm
+    inlines = []
 
     def queryset(self, request):
         return self.model.objects.all()

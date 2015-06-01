@@ -68,3 +68,5 @@ class AssetAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Asset, AssetAdmin)
+
+admin.site.register(ParameterValue,admin.ModelAdmin)

@@ -48,6 +48,8 @@ class Parameter(models.Model):
         return self.get_value_correspondent(value).alert
 
     def get_warning(self, value):
+        print "EEEE"
+        print self.get_value_correspondent(value).warning
         return self.get_value_correspondent(value).warning
 
     def get_sum(self, value):

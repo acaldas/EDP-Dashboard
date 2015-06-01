@@ -5,7 +5,7 @@
 $(document).ready(function() {
 
     var g = new JustGage({
-        id: "gauge",
+        id: "hi-gauge",
         value: 0,
         min: 0,
         max: 100,
@@ -20,7 +20,8 @@ $(document).ready(function() {
     });
 
     setTimeout(function () {
-        g.refresh(90);
+        var hi = $('#hi-gauge').data('hi') | 0;
+        g.refresh(hi);
     }, 1000);
 
     function barWobble(element, height, speed) {
