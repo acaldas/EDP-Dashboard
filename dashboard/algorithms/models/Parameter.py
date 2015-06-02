@@ -4,12 +4,16 @@ from django.db import models
 from Fault import Fault
 from AssetType import Technology
 
+
 class Parameter(models.Model):
 
     name = models.CharField(max_length=200)
-    fault = models.ForeignKey(Fault, blank=True, null=True)
+    fault = models.ForeignKey(Fault, blank=True, null=True, editable=False)
     function = models.ForeignKey('utils.RegressionFunction', null=True, blank=True)
-    technology = models.ForeignKey(Technology, null=True, blank=True)
+    technology = models.ForeignKey(Technology, related_name="aging_parameters",null=True, blank=True, editable=False)
+
+    class Meta:
+        ordering = ('name',)
 
     def __unicode__(self):
         return u'{}'.format(self.name)
@@ -48,7 +52,6 @@ class Parameter(models.Model):
         return self.get_value_correspondent(value).alert
 
     def get_warning(self, value):
-        print "EEEE"
         print self.get_value_correspondent(value).warning
         return self.get_value_correspondent(value).warning
 
@@ -84,3 +87,4 @@ class Parameters(Parameter):
     class Meta:
         proxy = True
         verbose_name_plural = "Parameters"
+        ordering = ('name',)

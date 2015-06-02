@@ -21,7 +21,7 @@
                             var selected_option = $(value).find('option:selected')[0];
                             var selected_value = $(selected_option).attr('value');
 
-                            clean_options(value)
+                            clean_options(value);
                             possible_values.forEach(function (option) {
                                 var optxt = '<option ';
                                 if (option.id == selected_value)
@@ -41,7 +41,7 @@
                     }
                 }
                 var watch_parameter = function(parameter){
-                    $(parameter).on('change', function(){
+                    $(parameter).off('change').on('change', function(){
                         update_options(parameter);
                     })
                 };
@@ -50,6 +50,18 @@
                 parameters.forEach(function(parameter){
                     update_options(parameter);
                     watch_parameter(parameter);
-                })
+                });
+
+                $('a.parametervalue_set-group.grp-add-handler').toArray().forEach(function(addButton){
+                    $(addButton).mouseup(function(){
+
+                        setTimeout(function(){
+                            var parameters = $('.parameter select').toArray();
+                            var newparameter = parameters[parameters.length-2];
+                            update_options(newparameter);
+                            watch_parameter(newparameter);
+                        }, 50);
+                    });
+                });
             });
 })(grp.jQuery);

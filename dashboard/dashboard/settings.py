@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'grappelli_nested',
     'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,7 +43,7 @@ INSTALLED_APPS = (
     'algorithms',
     'utils',
     'network',
-    'nested_inline',
+    #'nested_inline',
     'djangobower',
 )
 

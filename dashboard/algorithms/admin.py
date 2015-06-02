@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib import admin
-from nested_inline.admin import NestedStackedInline, NestedTabularInline, NestedModelAdmin
+from grappelli_nested.admin import NestedStackedInline, NestedTabularInline, NestedModelAdmin
+from grappelli_nested.forms import BaseNestedModelForm
+#from nested_inline.admin import NestedStackedInline, NestedTabularInline, NestedModelAdmin
 from models.AssetType import Technology, AssetType, GlobalParameter
 from models.Parameter import Parameter, ValueCorrespondence, Parameters
 from models.Component import Component
@@ -8,7 +10,7 @@ from models.Function import Function
 from models.Fault import Fault, ExternalFactor, Faults
 
 
-class FaultsForm(forms.ModelForm):
+class FaultsForm(BaseNestedModelForm):
     class Meta:
         model = Faults
         fields = "__all__"
@@ -33,75 +35,104 @@ class FaultsForm(forms.ModelForm):
 class ValueCorrespondenceInline(NestedTabularInline):
     model = ValueCorrespondence
     fk_name = 'parameter'
-    extra = 1
+    extra = 2
     save_as = True
 
+    def queryset(self, request):
+        return self.model.objects.all()
 
-class ParameterInline(NestedTabularInline):
+
+class ParameterInline(NestedStackedInline):
     model = Parameter
-    inlines = [ValueCorrespondenceInline]
+    inlines = [ValueCorrespondenceInline, ]
     fk_name = 'fault'
     extra = 1
     save_as = True
 
+    def queryset(self, request):
+        return self.model.objects.all()
 
-class AgingParameterInline(NestedTabularInline):
+
+class AgingParameterInline(NestedStackedInline):
     model = Parameter
-    inlines = [ValueCorrespondenceInline]
+    inlines = [ValueCorrespondenceInline, ]
     extra = 1
     save_as = True
+
+    def queryset(self, request):
+        return self.model.objects.all()
 
 
 class TechnologyAdmin(NestedModelAdmin):
     model = Technology
-    inlines = [AgingParameterInline]
+    inlines = [AgingParameterInline, ]
     save_as = True
+
+    def queryset(self, request):
+        return self.model.objects.all()
 
 admin.site.register(Technology, TechnologyAdmin)
 
-class FaultInline(NestedTabularInline):
+
+class FaultInline(NestedStackedInline):
     model = Fault
-    inlines = []
-    form = FaultsForm
+    inlines = [ParameterInline, ]
+    #form = FaultsForm
     fk_name = 'function'
-    extra = 0
+    extra = 1
     save_as = True
+
+    def queryset(self, request):
+        return self.model.objects.all()
 
 
 class FunctionInline(NestedStackedInline):
     model = Function
-    inlines = [FaultInline]
+    inlines = [FaultInline,]
     fk_name = 'component'
-    extra = 0
+    extra = 1
     save_as = True
+
+    def queryset(self, request):
+        return self.model.objects.all()
 
 
 class ComponentInline(NestedStackedInline):
     model = Component
-    inlines = [FunctionInline]
+    inlines = [FunctionInline, ]
     fk_name = 'asset'
     extra = 0
     save_as = True
 
+    def queryset(self, request):
+        return self.model.objects.all()
+
 
 class ParametersAdmin(admin.ModelAdmin):
     model = Parameters
-    inlines = [ValueCorrespondenceInline]
+    inlines = [ValueCorrespondenceInline, ]
+    save_as = True
 
     def queryset(self, request):
         return self.model.objects.all()
 admin.site.register(Parameters, ParametersAdmin)
 
 
-class GlobalParameterInline(admin.TabularInline):
+class GlobalParameterInline(NestedTabularInline):
     model = GlobalParameter
+    fk_name = 'asset'
     extra = 0
+    inlines = []
+
+    def queryset(self, request):
+        return self.model.objects.all()
 
 
 class AssetTypeAdmin(NestedModelAdmin):
     model = AssetType
-    inlines = [GlobalParameterInline, ComponentInline]
+    inlines = [GlobalParameterInline, ComponentInline, ]
     save_as = True
+    list_display = ('name', 'technology')
 
 admin.site.register(AssetType, AssetTypeAdmin)
 
@@ -110,11 +141,23 @@ class ExternalFactorInline(admin.TabularInline):
     model = ExternalFactor
     extra = 0
     save_as = True
+    inlines = []
+
+    def queryset(self, request):
+        return self.model.objects.all()
+
 
 class FaultsAdmin(admin.ModelAdmin):
     model = Faults
-    form = FaultsForm
-    inlines = []
+    #form = FaultsForm
+    inlines = [ExternalFactorInline,]
+    list_display = ('name', 'get_asset')
+
+    def get_asset(self, obj):
+        return obj.function.component.asset
+
+    get_asset.short_description = 'Ativo'
+    get_asset.admin_order_field = 'function__component__asset'
 
     def queryset(self, request):
         return self.model.objects.all()

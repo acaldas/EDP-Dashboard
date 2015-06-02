@@ -111,8 +111,9 @@ class Asset(models.Model):
             else:
                 value = 0
 
-            external_fp += (100.0 - value) * external_factor.local_weight * external_factor.global_weight
+            external_fp += (100.0 - value) * external_factor.local_weight * external_factor.global_weight /100.0
 
+        print '{} {} {}'.format(external_fp, external_factor.local_weight, external_factor.global_weight)
         return round((age_fp + condition_fp + external_fp)/100.0, 3)
 
     def get_asset_failure_probability(self, faults):

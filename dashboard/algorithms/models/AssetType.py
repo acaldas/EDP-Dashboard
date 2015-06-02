@@ -11,6 +11,7 @@ class Technology(models.Model):
 
     class Meta:
         verbose_name_plural = "Technologies"
+        ordering = ('name',)
 
     def __unicode__(self):
         return self.name
@@ -19,7 +20,7 @@ class Technology(models.Model):
 class AssetType(models.Model):
     name = models.CharField(max_length=200)
     global_parameters = models.ManyToManyField('algorithms.Parameter', through='algorithms.GlobalParameter')
-    technology = models.ForeignKey(Technology)
+    technology = models.OneToOneField(Technology)
     aging_function = models.ForeignKey('utils.RegressionFunction', null=True,)
 
     def __unicode__(self):
@@ -56,3 +57,6 @@ class GlobalParameter(models.Model):
     parameter = models.ForeignKey('algorithms.Parameter')
     local_weight = models.FloatField()
     global_weight = models.FloatField()
+
+    def __unicode__(self):
+        return u'{} - {}'.format(self.asset, self.parameter)

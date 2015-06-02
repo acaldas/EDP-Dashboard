@@ -29,7 +29,6 @@ class ExternalFactor(models.Model):
 
 
 class Faults(Fault):
-    list_display = ('first_name', 'last_name')
     class Meta:
         proxy = True
         verbose_name_plural = "Faults"

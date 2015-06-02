@@ -14,7 +14,7 @@ class ParameterValueForm(forms.ModelForm):
     class Media:
         from django.conf import settings
         static_url = getattr(settings, 'STATIC_URL', '/static/')
-        js = [ static_url+'admin/parameter_value_form.js', ]
+        js = [static_url+'admin/parameter_value_form.js', ]
 
     def __init__(self, *args, **kwargs):
         super(ParameterValueForm, self).__init__(*args, **kwargs)
@@ -23,7 +23,7 @@ class ParameterValueForm(forms.ModelForm):
 class ParameterValueInline(admin.TabularInline):
     model = ParameterValue
     form = ParameterValueForm
-    extra = 1
+    extra = 2
 
     def get_formset(self, request, obj=None, **kwargs):
         formset = super(ParameterValueInline, self).get_formset(request, obj, **kwargs)
