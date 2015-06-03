@@ -24,11 +24,11 @@ def asset_change_form(request):
 
 def show_asset(request, asset_id):
     asset = get_object_or_404(Asset, pk=asset_id)
-    context = {'asset': asset.get_asset_info()}
+    context = {'asset': asset.get_asset_info(historic=True)}
     return render(request,'show_asset.html', context)
 
 
 def show_asset_skeleton(request, asset_id):
     asset = get_object_or_404(Asset, pk=asset_id)
-    context = {'asset': asset.get_asset_info()}
+    context = {'asset': asset.get_asset_info(historic=True)}
     return render(request,'show_asset_skeleton.html', context)

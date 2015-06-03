@@ -49,7 +49,7 @@ class AssetType(models.Model):
 
     #REMAINING LIFETIME
     def get_aging_parameters(self):
-        return list(self.technology.parameter_set.all())
+        return list(self.technology.aging_parameters.all())
 
 
 class GlobalParameter(models.Model):

@@ -457,7 +457,7 @@
                         <div class="panel-bar light-grey-bg">
                             <div class="spacer-xs">
                                 <p class="center-align-text">{{asset.remaining_lifetime|floatformat:"-1"}} ano{{ asset.remaining_lifetime|pluralize }}</p>
-                                <ul class="asset-progress-bar" data-value={{asset.remaining_lifetime}} data-max={{asset.get_max_age}}>
+                                <ul class="asset-progress-bar" data-value={{asset.remaining_lifetime}} data-max={{asset.max_age}}>
                                     <li>&nbsp;</li>
                                     <li>&nbsp;</li>
                                     <li>&nbsp;</li>
@@ -648,7 +648,7 @@
 
                             <div class="col-lg-3">
                                 <h3>Vida Restante</h3>
-                                <h2>{{asset.get_reducted_lifetime|floatformat:"-2"}} ano{{asset.get_reducted_lifetime|pluralize}}</h2>
+                                <h2>{{asset.reduced_lifetime|floatformat:"-2"}} ano{{asset.reduced_lifetime|pluralize}}</h2>
                             </div>
                             <div class="col-lg-3">
                                 <h3>Obsolescência</h3>
@@ -698,7 +698,7 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div id="morris-area-chart"></div>
+                            <div id="morris-historic-chart"></div>
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -1139,6 +1139,11 @@
     <!-- Dashboard -->
     <script src="{% static 'network/js/gauge.js' %}"></script>
     <script src="{% static 'network/js/progress_circle.js' %}"></script>
+    <script type="text/javascript">
+        var asset_historic = {{ asset.historic_json|safe }};
+        console.log(asset_historic);
+    </script>
+    <script src="{% static 'network/js/historic_chart.js' %}"></script>
 
 
 </body>

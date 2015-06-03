@@ -35,7 +35,7 @@ class FaultsForm(BaseNestedModelForm):
 class ValueCorrespondenceInline(NestedTabularInline):
     model = ValueCorrespondence
     fk_name = 'parameter'
-    extra = 2
+    extra = 1
     save_as = True
 
     def queryset(self, request):
