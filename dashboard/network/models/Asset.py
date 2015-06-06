@@ -1,5 +1,6 @@
-__author__ = 'Afonso'
 # -*- coding: utf-8 -*-
+__author__ = 'Afonso'
+
 
 from django.db import models
 from datetime import date
@@ -18,6 +19,7 @@ class Asset(models.Model):
     panel = models.CharField(max_length=200, blank=True, null=True)
     asset_type = models.ForeignKey('algorithms.AssetType')
     parameters = models.ManyToManyField('algorithms.Parameter', through='network.ParameterValue')
+    substations = models.ForeignKey('network.Substation')
 
     def get_age(self):
         return date.today().year - self.fabrication_year

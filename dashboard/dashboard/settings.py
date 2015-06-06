@@ -45,6 +45,8 @@ INSTALLED_APPS = (
     'network',
     #'nested_inline',
     'djangobower',
+    'geoposition',
+    'gmapi',
 )
 
 MIDDLEWARE_CLASSES = (

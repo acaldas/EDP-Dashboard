@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^asset_parameters/(?P<asset_id>[0-9]+)/$', views.get_asset_parameters_and_possible_values, name = 'get_asset_parameters_and_possible_values' ),
     url(r'^asset/(?P<asset_id>[0-9]+)/$', views.show_asset, name='show_asset'),
     url(r'^asset_skeleton/(?P<asset_id>[0-9]+)/$', views.show_asset_skeleton, name='show_asset_skeleton'),
+    url(r'^substation/(?P<substation_id>[0-9]+)/$', views.show_substation, name="show_substation"),
     url(r'^$', views.home, name="home")
 ]

@@ -390,15 +390,7 @@
                             <i class="fa fa-tachometer fa-fw"></i> Índice de Saúde
                         </div>
                         <div class="panel-body">
-                            {{ form.map }}
-                            {{ form.media.js }}
-                            <script type="text/javascript">
-                                window.marker = {
-                                    markerOver: function() { this.openInfoWindow(); console.log() },
-                                    markerOut: function() { this.closeInfoWindow(); },
-                                    markerClick: function() { console.log(this.title);window.location.href = this.title; }
-                                };
-                            </script>
+                            <h1>{{substation}}</h1>
                         </div>
                     </div>
                 </div>

@@ -2,6 +2,7 @@ from django.contrib import admin
 from django import forms
 import json
 from models.Asset import Asset, ParameterValue
+from models.Substation import Substation
 from algorithms.models.Parameter import Parameter, ValueCorrespondence
 
 
@@ -69,4 +70,6 @@ class AssetAdmin(admin.ModelAdmin):
 
 admin.site.register(Asset, AssetAdmin)
 
-admin.site.register(ParameterValue,admin.ModelAdmin)
+admin.site.register(ParameterValue, admin.ModelAdmin)
+
+admin.site.register(Substation, admin.ModelAdmin)
