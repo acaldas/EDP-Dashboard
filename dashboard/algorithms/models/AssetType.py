@@ -59,4 +59,4 @@ class GlobalParameter(models.Model):
     global_weight = models.FloatField()
 
     def __unicode__(self):
-        return u'{} - {}'.format(self.asset, self.parameter)
+        return u'{} - {}'.format(self.asset, self.parameter.name)

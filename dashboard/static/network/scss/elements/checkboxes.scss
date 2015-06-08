@@ -1,0 +1,19 @@
+.chart_parameter_select {
+
+  hr {
+    margin: 0px 2px;
+  }
+
+  input {
+    padding-left: 20px;
+    margin-left: 0px!important;
+
+    &:checked + label {
+      color: #337ab7;
+    }
+  }
+
+  label {
+    font-size: 16px;
+  }
+}

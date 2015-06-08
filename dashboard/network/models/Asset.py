@@ -14,12 +14,13 @@ import json
 
 class Asset(models.Model):
     name = models.CharField(max_length=200)
+    sap_id = models.CharField(max_length=200, blank=True, null=True, verbose_name="SAP ID")
     fabrication_year = models.IntegerField()
     obsolescence_date = models.DateField()
     panel = models.CharField(max_length=200, blank=True, null=True)
     asset_type = models.ForeignKey('algorithms.AssetType')
     parameters = models.ManyToManyField('algorithms.Parameter', through='network.ParameterValue')
-    substations = models.ForeignKey('network.Substation')
+    substation = models.ForeignKey('network.Substation')
 
     def get_age(self):
         return date.today().year - self.fabrication_year
@@ -189,7 +190,7 @@ class Asset(models.Model):
 
         info = {}
         faults = []
-        info['global_parameters'] = self.asset_type.get_global_parameters()
+        info['global_parameters'] = list(self.asset_type.get_global_parameters())
         for p in info['global_parameters']:
             p.values = self.get_parameter_values(p.pk, date)
 
@@ -197,9 +198,15 @@ class Asset(models.Model):
         for parameter in info['external_factors']:
             parameter.values = self.get_parameter_values(parameter.pk, date)
 
+        info['aging_parameters'] = list(set(self.asset_type.get_aging_parameters()))
+        for parameter in info['aging_parameters']:
+            parameter.values = self.get_parameter_values(parameter.pk, date)
+
         all_parameters = []
         all_parameters.extend(info['global_parameters'])
         all_parameters.extend(info['external_factors'])
+        all_parameters.extend(info['aging_parameters'])
+
         info['components'] = self.asset_type.component_set.all()
         for c in info['components']:
             c.num_parameters = 0
@@ -217,7 +224,7 @@ class Asset(models.Model):
                     #failure probability
                     fault.failure_probability = self.get_fault_failure_probability(fault, date)
                     faults.append(fault)
-                    all_parameters.extend(fault.parameters)
+                    all_parameters.extend(list(fault.parameters))
                 f.health_index = sum(fault.global_weight/100*fault.health_index for fault in f.faults if fault.health_index is not None)
             c.health_index = self.get_component_health_index(c, info['global_parameters'])
 
@@ -228,17 +235,33 @@ class Asset(models.Model):
             info['reduced_lifetime'] = self.get_reduced_lifetime(date)
             info['obsolescence_lifetime'] = self.get_obsolescence_lifetime()
             info['max_age'] = self.get_max_age()
-            info['aging_parameters'] = self.asset_type.get_aging_parameters()
+            info['id'] = self.pk
+            info['sap_id'] = self.sap_id
+            info['name'] = self.name
+            info['substation'] = self.substation
+            info['asset_type'] = self.asset_type
+            info['fabrication_year'] = self.fabrication_year
+            info['technology'] = self.asset_type.technology
+            info['panel'] = self.panel
+            all_parameters = filter(lambda x: self.has_value(x.values), all_parameters)
+            info['all_parameters'] = all_parameters
+
+            all_parameters_json = map(lambda p:{'id': p.pk, 'name': p.name, 'values': map(lambda v: {'date': str(v.date), 'hi': v.get_health_index()}, p.values)}, all_parameters)
+            for parameter in all_parameters_json:
+                parameter.get('values').append({'date': str(datetime.now().date()), 'hi': parameter.get('values')[0].get('hi')})
+
+            info['all_parameters_json'] = json.dumps(all_parameters_json)
+
             all_parameters = ParameterValue.objects.filter(asset=self)
             all_parameters = filter(lambda x: x.has_value(), all_parameters)
 
-            if historic: #dates from database com as datetime.date and default date value is datetime.datetime
+            if historic:
                 iter = groupby(sorted(all_parameters, key=lambda x: x.date, reverse=True), key=lambda x: x.date)
                 info['historic'] = [{'date': str(date.date()), 'health_index': round(info['health_index']), 'reliability': round(info['reliability']),
                                                   'failure_probability': round(info['failure_probability']),'remaining_lifetime': round(info['remaining_lifetime'])}]
                 for pdate, parameters in iter:
                     oldinfo = self.get_asset_info(pdate)
-                    info['historic'].append({'date': str(pdate), 'health_index': round(oldinfo['health_index']), 'reliability': round(oldinfo['reliability']),
+                    info['historic'].insert(0, {'date': str(pdate), 'health_index': round(oldinfo['health_index']), 'reliability': round(oldinfo['reliability']),
                                             'failure_probability': round(oldinfo['failure_probability']), 'remaining_lifetime': round(oldinfo['remaining_lifetime'])})
 
                 info['historic_json'] = json.dumps(info['historic'])

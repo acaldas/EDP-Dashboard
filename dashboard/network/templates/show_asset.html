@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>{{asset.asset_type}}</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -381,11 +381,22 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard</h1>
+                    <div class="page-header">
+                        <h1>{{asset.asset_type}}</h1>
+                        <div class="asset_information">
+                            <h4><b>Subestação:</b> {{asset.substation}}</h4>
+                            <h4><b>Designação:</b> {{asset.name}}</h4>
+                            <h4><b>Tecnologia:</b> {{asset.technology}}</h4>
+                            {%if asset.sap_id%}<h4><b>SAP ID:</b> {{asset.sap_id}}</h4>{%endif%}
+                            <h4><b>Ano de fabrico:</b> {{asset.fabrication_year}}</h4>
+                            {%if asset.panel%}<h4><b>Painel:</b> {{substation.panel}}</h4>{%endif%}
+                        </div>
+                    </div>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+
               <div class="row row-eq-height">
                 <div class="col-lg-6">
                     <div class="panel panel-default">
@@ -560,18 +571,18 @@
                                 <tbody>
                                     {% for component in asset.components %}
                                        <tr>
-                                           <td rowspan="{{component.num_parameters}}">{{ component }} - {{component.health_index|floatformat:"-2"}}</td>
+                                           <td rowspan="{{component.num_parameters}}">{{ component }} - <span class="text-color-{{component.health_index|value_to_color:100}}">{{component.health_index|floatformat:"-2"}}</span></td>
                                            {% for function in component.functions %}
-                                                <td rowspan="{{function.num_parameters}}">{{ function }} - {{function.health_index|floatformat:"-2"}}</td>
+                                                <td rowspan="{{function.num_parameters}}">{{ function }} - <span class="text-color-{{function.health_index|value_to_color:100}}">{{function.health_index|floatformat:"-2"}}</span></td>
                                                 {% for fault in function.faults %}
-                                                    <td rowspan="{{fault.parameters|length}}">{{ fault }} - {{fault.health_index|floatformat:"-2"}}</td>
+                                                    <td rowspan="{{fault.parameters|length}}">{{ fault }} - <span class="text-color-{{fault.health_index|value_to_color:100}}">{{fault.health_index|floatformat:"-2"}}</span></td>
                                                     {% for parameter in fault.parameters %}
                                                     {% if not forloop.first %}
                                                        <tr>
                                                     {% endif %}
-                                                       <td>{{ parameter }}</td>
+                                                       <td>{{ parameter.name }}</td>
                                                        {% with parameter.values|first as value %}
-                                                       <td style="color:{{value|get_parameter_color}}">{% if value %}{{value.get_value}}{% else %}Desconhecido{% endif %}</td>
+                                                       <td class="{% if value %}text-color-{{value.get_health_index|value_to_color:100}}{% endif %}">{% if value %}{{value.get_value}}{% else %}Desconhecido{% endif %}</td>
                                                        {% endwith %}
                                                        </tr>
                                                     {% endfor %}
@@ -582,8 +593,8 @@
                                     {% for parameter in asset.global_parameters %}
                                         <tr>
                                             <td colspan="3">Parâmetro geral</td>
-                                            <td>{{parameter}}</td>
-                                            <td>{% with parameter.values|first as value %}{{ value.get_value }}{% endwith %}</td></tr>
+                                            <td>{{parameter.name}}</td>
+                                            {% with parameter.values|first as value %}<td class="text-color-{{value.get_health_index|value_to_color:100}}">{{ value.get_value }}</td>{% endwith %}</tr>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -596,7 +607,7 @@
                 <div class="col-lg-6">
                     <div class="panel panel-default clearfix">
                         <div class="panel-heading">
-                            <i class="fa fa-warning fa-fw"></i> Probabilidade de Falha
+                            <i class="fa fa-warning fa-fw"></i><h3>Probabilidade de Falha</h3>
                         </div>
                         <div class="fp-panel clearfix">
                             <div class="col-lg-7">
@@ -626,11 +637,11 @@
                                 <div class="external-factors col-lg-5 clearfix">
                                     <table class="table-bordered table">
                                         <thead>
-                                            <tr></tr><th colspan="2">Fatores Externos</th></tr>
+                                            <tr><th colspan="2" style="text-align: center">Fatores Externos</th></tr>
                                         </thead>
                                         <tbody>
                                         {% for external_factor in asset.external_factors %}
-                                            <tr><td>{{external_factor}}</td><td>{% with external_factor.values|first as value %}{{ value.get_value }}{% endwith %}</td></tr>
+                                            <tr><td width="65%">{{external_factor.name}}</td>{% with external_factor.values|first as value %}<td class="text-color-{{value.get_health_index|value_to_color:100}}">{{ value.get_value }}</td>{% endwith %}</tr>
                                         {% endfor %}
                                         </tbody>
                                     </table>
@@ -642,26 +653,26 @@
                 <div class="col-lg-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-heartbeat fa-fw"></i> Vida restante
+                            <i class="fa fa-heartbeat fa-fw"></i><h3>Vida restante</h3>
                         </div>
                         <div class="life-panel clearfix">
 
                             <div class="col-lg-3">
                                 <h3>Vida Restante</h3>
-                                <h2>{{asset.reduced_lifetime|floatformat:"-2"}} ano{{asset.reduced_lifetime|pluralize}}</h2>
+                                <h2 class="text-color-{{asset.reduced_lifetime|value_to_color:asset.max_age}}">{{asset.reduced_lifetime|floatformat:"-2"}} ano{{asset.reduced_lifetime|pluralize}}</h2>
                             </div>
                             <div class="col-lg-3">
                                 <h3>Obsolescência</h3>
-                                <h2>{{asset.obsolescence_lifetime|floatformat:"-2"}} ano{{asset.obsolescence_lifetime|pluralize}}</h2>
+                                <h2 class="text-color-{{asset.obsolescence_lifetime|value_to_color:asset.max_age}}">{{asset.obsolescence_lifetime|floatformat:"-2"}} ano{{asset.obsolescence_lifetime|pluralize}}</h2>
                             </div>
                             <div class="col-lg-6 aging-parameters">
                                 <table class="table-bordered table aging-table">
                                     <thead>
-                                        <tr></tr><th colspan="2">Parâmetros de Envelhecimento</th></tr>
+                                        <tr><th colspan="2" style="text-align: center">Parâmetros de Envelhecimento</th></tr>
                                     </thead>
                                     <tbody>
                                     {% for aging_parameter in asset.aging_parameters %}
-                                        <tr><td>{{aging_parameter}}</td><td>{% with aging_parameter.values|first as value %}{{ value.get_value }}{% endwith %}</td></tr>
+                                        <tr><td>{{aging_parameter.name}}</td><td>{% with aging_parameter.values|first as value %}{{ value.get_value }}{% endwith %}</td></tr>
                                     {% endfor %}
                                     </tbody>
                                 </table>
@@ -672,10 +683,10 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-9">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
+                            <i class="fa fa-line-chart fa-fw"></i><h3>Histórico</h3>
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -698,228 +709,28 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div id="morris-historic-chart"></div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Bar Chart Example
-                            <div class="pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        Actions
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="#">Action</a>
-                                        </li>
-                                        <li><a href="#">Another action</a>
-                                        </li>
-                                        <li><a href="#">Something else here</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a href="#">Separated link</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                            <div class="col-lg-9">
+                                <div id="morris-historic-chart"></div>
                             </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-hover table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Date</th>
-                                                    <th>Time</th>
-                                                    <th>Amount</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>3326</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:29 PM</td>
-                                                    <td>$321.33</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3325</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:20 PM</td>
-                                                    <td>$234.34</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3324</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:03 PM</td>
-                                                    <td>$724.17</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3323</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>3:00 PM</td>
-                                                    <td>$23.71</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3322</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>2:49 PM</td>
-                                                    <td>$8345.23</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3321</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>2:23 PM</td>
-                                                    <td>$245.12</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3320</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>2:15 PM</td>
-                                                    <td>$5663.54</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3319</td>
-                                                    <td>10/21/2013</td>
-                                                    <td>2:13 PM</td>
-                                                    <td>$943.45</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- /.table-responsive -->
+                            <div class="col-lg-3 chart_parameter_select panel panel-default">
+                                <h4>Parâmetros:</h4>
+                                <hr>
+                                <div class="radio">
+                                  <input type="radio" name="graph_parameter" checked="true" value="geral"><label>Geral</label>
                                 </div>
-                                <!-- /.col-lg-4 (nested) -->
-                                <div class="col-lg-8">
-                                    <div id="morris-bar-chart"></div>
+                                {% for parameter in asset.all_parameters %}
+                                <div class="radio">
+                                  <input type="radio" name="graph_parameter" value="{{parameter.pk}}"><label>{{parameter.name}}</label>
                                 </div>
-                                <!-- /.col-lg-8 (nested) -->
+                                {% endfor %}
                             </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-clock-o fa-fw"></i> Responsive Timeline
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <ul class="timeline">
-                                <li>
-                                    <div class="timeline-badge"><i class="fa fa-check"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                            <p><small class="text-muted"><i class="fa fa-clock-o"></i> 11 hours ago via Twitter</small>
-                                            </p>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero laboriosam dolor perspiciatis omnis exercitationem. Beatae, officia pariatur? Est cum veniam excepturi. Maiores praesentium, porro voluptas suscipit facere rem dicta, debitis.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="timeline-inverted">
-                                    <div class="timeline-badge warning"><i class="fa fa-credit-card"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem dolorem quibusdam, tenetur commodi provident cumque magni voluptatem libero, quis rerum. Fugiat esse debitis optio, tempore. Animi officiis alias, officia repellendus.</p>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium maiores odit qui est tempora eos, nostrum provident explicabo dignissimos debitis vel! Adipisci eius voluptates, ad aut recusandae minus eaque facere.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-badge danger"><i class="fa fa-bomb"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus numquam facilis enim eaque, tenetur nam id qui vel velit similique nihil iure molestias aliquam, voluptatem totam quaerat, magni commodi quisquam.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="timeline-inverted">
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates est quaerat asperiores sapiente, eligendi, nihil. Itaque quos, alias sapiente rerum quas odit! Aperiam officiis quidem delectus libero, omnis ut debitis!</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-badge info"><i class="fa fa-save"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis minus modi quam ipsum alias at est molestiae excepturi delectus nesciunt, quibusdam debitis amet, beatae consequuntur impedit nulla qui! Laborum, atque.</p>
-                                            <hr>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="fa fa-gear"></i>  <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Action</a>
-                                                    </li>
-                                                    <li><a href="#">Another action</a>
-                                                    </li>
-                                                    <li><a href="#">Something else here</a>
-                                                    </li>
-                                                    <li class="divider"></li>
-                                                    <li><a href="#">Separated link</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi fuga odio quibusdam. Iure expedita, incidunt unde quis nam! Quod, quisquam. Officia quam qui adipisci quas consequuntur nostrum sequi. Consequuntur, commodi.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="timeline-inverted">
-                                    <div class="timeline-badge success"><i class="fa fa-graduation-cap"></i>
-                                    </div>
-                                    <div class="timeline-panel">
-                                        <div class="timeline-heading">
-                                            <h4 class="timeline-title">Lorem ipsum dolor</h4>
-                                        </div>
-                                        <div class="timeline-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt obcaecati, quaerat tempore officia voluptas debitis consectetur culpa amet, accusamus dolorum fugiat, animi dicta aperiam, enim incidunt quisquam maxime neque eaque.</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
                         </div>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
                 </div>
                 <!-- /.col-lg-8 -->
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-bell fa-fw"></i> Notifications Panel
@@ -979,135 +790,6 @@
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Donut Chart Example
-                        </div>
-                        <div class="panel-body">
-                            <div id="morris-donut-chart"></div>
-                            <a href="#" class="btn btn-default btn-block">View Details</a>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                    <div class="chat-panel panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-comments fa-fw"></i>
-                            Chat
-                            <div class="btn-group pull-right">
-                                <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-chevron-down"></i>
-                                </button>
-                                <ul class="dropdown-menu slidedown">
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-refresh fa-fw"></i> Refresh
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-check-circle fa-fw"></i> Available
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-times fa-fw"></i> Busy
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-clock-o fa-fw"></i> Away
-                                        </a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-sign-out fa-fw"></i> Sign Out
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <ul class="chat">
-                                <li class="left clearfix">
-                                    <span class="chat-img pull-left">
-                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">Jack Sparrow</strong>
-                                            <small class="pull-right text-muted">
-                                                <i class="fa fa-clock-o fa-fw"></i> 12 mins ago
-                                            </small>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="right clearfix">
-                                    <span class="chat-img pull-right">
-                                        <img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle" />
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <small class=" text-muted">
-                                                <i class="fa fa-clock-o fa-fw"></i> 13 mins ago</small>
-                                            <strong class="pull-right primary-font">Bhaumik Patel</strong>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="left clearfix">
-                                    <span class="chat-img pull-left">
-                                        <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar" class="img-circle" />
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">Jack Sparrow</strong>
-                                            <small class="pull-right text-muted">
-                                                <i class="fa fa-clock-o fa-fw"></i> 14 mins ago</small>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="right clearfix">
-                                    <span class="chat-img pull-right">
-                                        <img src="http://placehold.it/50/FA6F57/fff" alt="User Avatar" class="img-circle" />
-                                    </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <small class=" text-muted">
-                                                <i class="fa fa-clock-o fa-fw"></i> 15 mins ago</small>
-                                            <strong class="pull-right primary-font">Bhaumik Patel</strong>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- /.panel-body -->
-                        <div class="panel-footer">
-                            <div class="input-group">
-                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-sm" id="btn-chat">
-                                        Send
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                        <!-- /.panel-footer -->
-                    </div>
-                    <!-- /.panel .chat-panel -->
                 </div>
                 <!-- /.col-lg-4 -->
             </div>
@@ -1141,7 +823,7 @@
     <script src="{% static 'network/js/progress_circle.js' %}"></script>
     <script type="text/javascript">
         var asset_historic = {{ asset.historic_json|safe }};
-        console.log(asset_historic);
+        var all_parameters = {{ asset.all_parameters_json|safe}};
     </script>
     <script src="{% static 'network/js/historic_chart.js' %}"></script>
 

@@ -56,6 +56,9 @@
     .alerts .panel .huge {
       font-size: 32px; }
 
+.asset_information {
+  padding: 0 15px; }
+
 #desc {
   text-align: center;
   margin: 40px 0; }
@@ -153,59 +156,135 @@
 .color-1 {
   background-color: #5CB85C; }
 
+.text-color-1 {
+  color: #5CB85C;
+  font-weight: bold; }
+
 .color-2 {
   background-color: #6EBD56; }
+
+.text-color-2 {
+  color: #6EBD56;
+  font-weight: bold; }
 
 .color-3 {
   background-color: #80C250; }
 
+.text-color-3 {
+  color: #80C250;
+  font-weight: bold; }
+
 .color-4 {
   background-color: #92C74B; }
+
+.text-color-4 {
+  color: #92C74B;
+  font-weight: bold; }
 
 .color-5 {
   background-color: #A4CC45; }
 
+.text-color-5 {
+  color: #A4CC45;
+  font-weight: bold; }
+
 .color-6 {
   background-color: #B6D140; }
+
+.text-color-6 {
+  color: #B6D140;
+  font-weight: bold; }
 
 .color-7 {
   background-color: #C8D63A; }
 
+.text-color-7 {
+  color: #C8D63A;
+  font-weight: bold; }
+
 .color-8 {
   background-color: #DADB35; }
+
+.text-color-8 {
+  color: #DADB35;
+  font-weight: bold; }
 
 .color-9 {
   background-color: #ECE02F; }
 
+.text-color-9 {
+  color: #ECE02F;
+  font-weight: bold; }
+
 .color-10 {
   background-color: #FEE62A; }
+
+.text-color-10 {
+  color: #FEE62A;
+  font-weight: bold; }
 
 .color-11 {
   background-color: #F9D52E; }
 
+.text-color-11 {
+  color: #F9D52E;
+  font-weight: bold; }
+
 .color-12 {
   background-color: #F5C532; }
+
+.text-color-12 {
+  color: #F5C532;
+  font-weight: bold; }
 
 .color-13 {
   background-color: #F1B536; }
 
+.text-color-13 {
+  color: #F1B536;
+  font-weight: bold; }
+
 .color-14 {
   background-color: #EDA43A; }
+
+.text-color-14 {
+  color: #EDA43A;
+  font-weight: bold; }
 
 .color-15 {
   background-color: #E9943E; }
 
+.text-color-15 {
+  color: #E9943E;
+  font-weight: bold; }
+
 .color-16 {
   background-color: #E58442; }
+
+.text-color-16 {
+  color: #E58442;
+  font-weight: bold; }
 
 .color-17 {
   background-color: #E17346; }
 
+.text-color-17 {
+  color: #E17346;
+  font-weight: bold; }
+
 .color-18 {
   background-color: #DD634A; }
 
+.text-color-18 {
+  color: #DD634A;
+  font-weight: bold; }
+
 .color-19 {
   background-color: #D9534F; }
+
+.text-color-19 {
+  color: #D9534F;
+  font-weight: bold; }
 
 .fp-panel {
   padding: 20px; }
@@ -269,3 +348,24 @@
 
 .col-bottom {
   vertical-align: bottom; }
+
+#substation-assets > tbody > tr:hover {
+  cursor: pointer; }
+
+#substations-map {
+  width: 730px;
+  margin: 0 auto; }
+  #substations-map h3 {
+    margin-left: 0px; }
+
+.chart_parameter_select hr {
+  margin: 0px 2px; }
+
+.chart_parameter_select input {
+  padding-left: 20px;
+  margin-left: 0px !important; }
+  .chart_parameter_select input:checked + label {
+    color: #337ab7; }
+
+.chart_parameter_select label {
+  font-size: 16px; }

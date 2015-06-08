@@ -11,15 +11,19 @@ from gmapi.forms.widgets import GoogleMap
 
 
 class MapForm(forms.Form):
-    map = forms.Field(widget=GoogleMap(attrs={'width':510, 'height':510}))
+    map = forms.Field(widget=GoogleMap(attrs={'width': 700, 'height': 800}))
 
 
-def home(request):
+class SmallMapForm(forms.Form):
+    map = forms.Field(widget=GoogleMap(attrs={'width': 300, 'height': 300}))
+
+
+def get_map(request, latitude=Substation.get_center_latitude(), longitude=Substation.get_center_longitude(), zoom=8):
 
     gmap = maps.Map(opts={
-        'center': maps.LatLng(Substation.get_center_latitude(), Substation.get_center_longitude()),
+        'center': maps.LatLng(latitude, longitude),
         'mapTypeId': maps.MapTypeId.HYBRID,
-        'zoom': 8,
+        'zoom': zoom,
         'mapTypeControlOptions': {
             'style': maps.MapTypeControlStyle.DEFAULT
         },
@@ -39,13 +43,21 @@ def home(request):
         info = maps.InfoWindow({'content': substation.name, 'disableAutoPan': True})
         info.open(gmap, marker)
 
-    context = {'form': MapForm(initial={'map': gmap})}
+    return gmap
+
+
+def home(request):
+    map_form = MapForm(initial={'map': get_map(request)})
+    context = {'form': map_form}
     return render_to_response('home.html', context)
 
 
 def show_substation(request, substation_id):
     substation = get_object_or_404(Substation, pk=substation_id)
-    context = {'substation': substation}
+    map_form = SmallMapForm(initial={'map': get_map(request, substation.position.latitude, substation.position.longitude, zoom=15)})
+    context = {'substation': substation,
+               'map': map_form
+              }
     return render(request, 'show_substation.html', context)
 
 

@@ -5,7 +5,6 @@ from django.db import models
 from geoposition.fields import GeopositionField
 
 
-
 class Substation(models.Model):
     name = models.CharField(max_length=200, verbose_name=u'Instalação')
     position = GeopositionField(verbose_name="Coordenadas")
@@ -14,6 +13,13 @@ class Substation(models.Model):
     postal_code = models.CharField(max_length=200, blank=True, null=True, verbose_name="C.P.")
     ga = models.CharField(max_length=200, blank=True, null=True, verbose_name="GA")
 
+    def get_assets_info(self):
+        assets = []
+
+        for asset in self.asset_set.all():
+            assets.append(asset.get_asset_info())
+        return assets
+
     @staticmethod
     def get_center_latitude():
         return 41.08707222222223
@@ -21,7 +27,6 @@ class Substation(models.Model):
     @staticmethod
     def get_center_longitude():
         return -7.885806980884584
-
 
     def __unicode__(self):
         return u'{}'.format(self.name)

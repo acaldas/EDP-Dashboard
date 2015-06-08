@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from django.contrib import admin
 from grappelli_nested.admin import NestedStackedInline, NestedTabularInline, NestedModelAdmin
@@ -112,6 +113,13 @@ class ParametersAdmin(admin.ModelAdmin):
     model = Parameters
     inlines = [ValueCorrespondenceInline, ]
     save_as = True
+    list_display = ('name', 'Ativo', 'Tipo')
+
+    def Ativo(self, obj):
+        return obj.get_asset()
+
+    def Tipo(self, obj):
+        return obj.get_type()
 
     def queryset(self, request):
         return self.model.objects.all()
@@ -154,7 +162,10 @@ class FaultsAdmin(admin.ModelAdmin):
     list_display = ('name', 'get_asset')
 
     def get_asset(self, obj):
-        return obj.function.component.asset
+        if obj.function:
+            return obj.function.component.asset
+        else:
+            return '---'
 
     get_asset.short_description = 'Ativo'
     get_asset.admin_order_field = 'function__component__asset'

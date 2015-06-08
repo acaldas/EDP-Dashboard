@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 __author__ = 'Afonso'
 
 from django.db import models
-from Fault import Fault
-from AssetType import Technology
+from Fault import Fault, ExternalFactor
+from AssetType import Technology, GlobalParameter
 
 
 class Parameter(models.Model):
@@ -12,11 +13,10 @@ class Parameter(models.Model):
     function = models.ForeignKey('utils.RegressionFunction', null=True, blank=True)
     technology = models.ForeignKey(Technology, related_name="aging_parameters",null=True, blank=True, editable=False)
 
-    class Meta:
-        ordering = ('name',)
+
 
     def __unicode__(self):
-        return u'{}'.format(self.name)
+        return u'{} - {} - {}'.format(self.get_asset(), self.get_type(), self.name)
 
     def get_possible_correspondences(self):
         return self.valuecorrespondence_set.all()
@@ -62,6 +62,38 @@ class Parameter(models.Model):
         if isinstance(self.name, str):
             self.name = self.name.decode("utf-8")
         super(Parameter, self).save(*args, **kwargs)
+
+    def get_asset(self):
+        if self.fault and self.fault.function and self.fault.function.component and self.fault.function.component.asset:
+            return self.fault.function.component.asset.name
+        elif self.technology:
+            return self.technology.name
+
+        global_parameter = GlobalParameter.objects.filter(parameter=self).first()
+        if global_parameter:
+            return global_parameter.asset.name
+
+        externalFactor = ExternalFactor.objects.filter(parameter=self).first()
+        if externalFactor:
+            return externalFactor.fault.function.component.asset.name
+
+        return '---'
+
+    def get_type(self):
+        if self.fault and self.fault.function and self.fault.function.component and self.fault.function.component.asset:
+            return u'Índice de Saúde'
+        elif self.technology:
+            return 'Envelhecimento'
+
+        global_parameter = GlobalParameter.objects.filter(parameter=self).first()
+        if global_parameter:
+            return u'Índice de Saúde'
+
+        externalFactor = ExternalFactor.objects.filter(parameter=self).first()
+        if externalFactor:
+            return 'Fator Externo'
+
+        return '---'
 
 
 class ValueCorrespondence(models.Model):

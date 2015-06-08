@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Subestações</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'bower_components/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -23,7 +23,7 @@
 
     <!-- Custom CSS -->
     <link href="{% static 'network/css/sb-admin-2.css' %}" rel="stylesheet">
-    <link href="{% static 'network/css/gauge.css' %}" rel="stylesheet">
+    <link href="{% static 'network/css/main.css' %}" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="{% static 'bower_components/morrisjs/morris.css' %}" rel="stylesheet">
@@ -378,23 +378,22 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard</h1>
+                    <h1 class="page-header">Rede de Subestações</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-              <div class="row">
-                <div class="col-lg-6">
+                <div id="substations-map">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-tachometer fa-fw"></i> Índice de Saúde
+                            <i class="fa fa-map-marker fa-fw"></i> <h3>Mapa</h3>
                         </div>
                         <div class="panel-body">
                             {{ form.map }}
                             {{ form.media.js }}
                             <script type="text/javascript">
                                 window.marker = {
-                                    markerOver: function() { this.openInfoWindow(); console.log() },
+                                    markerOver: function() { this.openInfoWindow(); },
                                     markerOut: function() { this.closeInfoWindow(); },
                                     markerClick: function() { console.log(this.title);window.location.href = this.title; }
                                 };
@@ -402,77 +401,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2">
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-check-square fa-fw"></i> Confiança
-                    </div>
-                    <div class="panel-body">
-                        <div class="panel-bar light-grey-bg">
-                            <div class="spacer-xs">
-                                <p class="center-align-text">90%</p>
-                                <ul class="asset-progress-bar" data-value=90 data-max=100>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-2">
-                  <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-heartbeat fa-fw"></i> Vida restante
-                    </div>
-                    <div class="panel-body">
-                        <div class="panel-bar light-grey-bg">
-                            <div class="spacer-xs">
-                                <p class="center-align-text">27 anos</p>
-                                <ul class="asset-progress-bar" data-value=27 data-max=40>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                    <li>&nbsp;</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             <!-- /.row -->
         </div>
         <!-- /#page-wrapper -->

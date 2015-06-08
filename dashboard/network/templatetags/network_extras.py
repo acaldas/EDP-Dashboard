@@ -34,3 +34,14 @@ def get_parameter_color(value):
             return "#d9534F"
 
     return "inherit"
+
+@register.filter(name="value_to_color")
+def value_to_color(value, max):
+    step = max/19.0
+    class_value = int(round(value/step, 0))
+    if class_value < 1:
+        class_value = 1
+    elif class_value > 19:
+        class_value = 19
+    class_value = 20 - class_value
+    return class_value
