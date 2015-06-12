@@ -59,6 +59,18 @@
 .asset_information {
   padding: 0 15px; }
 
+.recent_values {
+  padding-left: 0px; }
+  .recent_values .list-group-item {
+    padding: 10px 10px; }
+    .recent_values .list-group-item em {
+      line-height: 20px; }
+
+.substation-select a.list-group-item {
+  color: #337ab7; }
+  .substation-select a.list-group-item:hover {
+    color: #23527c; }
+
 #desc {
   text-align: center;
   margin: 40px 0; }
@@ -152,6 +164,10 @@
 .aging-table {
   padding: 20px;
   margin-top: 20px; }
+
+.components-table td, .components-table th {
+  text-align: center;
+  vertical-align: middle !important; }
 
 .color-1 {
   background-color: #5CB85C; }
@@ -369,3 +385,6 @@
 
 .chart_parameter_select label {
   font-size: 16px; }
+
+.navbar-default span.yourlabs-autocomplete {
+  top: 50px !important; }

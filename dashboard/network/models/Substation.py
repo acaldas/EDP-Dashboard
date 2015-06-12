@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Afonso'
-
+import autocomplete_light
 from django.db import models
 from geoposition.fields import GeopositionField
 
@@ -12,6 +12,10 @@ class Substation(models.Model):
     address = models.CharField(max_length=200, blank=True, null=True, verbose_name="Morada")
     postal_code = models.CharField(max_length=200, blank=True, null=True, verbose_name="C.P.")
     ga = models.CharField(max_length=200, blank=True, null=True, verbose_name="GA")
+
+    class Meta:
+        ordering = ['position', 'name']
+
 
     def get_assets_info(self):
         assets = []
@@ -30,3 +34,9 @@ class Substation(models.Model):
 
     def __unicode__(self):
         return u'{}'.format(self.name)
+
+
+class SubstationAutocomplete(autocomplete_light.AutocompleteModelBase):
+    search_fields = ['^name', 'sap_id']
+
+autocomplete_light.register(Substation, SubstationAutocomplete)

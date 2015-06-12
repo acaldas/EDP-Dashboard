@@ -37,6 +37,7 @@ def get_parameter_color(value):
 
 @register.filter(name="value_to_color")
 def value_to_color(value, max):
+    value = value or 0
     step = max/19.0
     class_value = int(round(value/step, 0))
     if class_value < 1:

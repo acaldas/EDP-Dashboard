@@ -6,7 +6,8 @@
                     $(value).append('<option value="">---------</option>');
                 };
                 var update_options = function(parameter) {
-                    var current_parameter = parameter_values[$(parameter).find(':selected').text()]
+                    var current_parameter = parameter_values[$(parameter).find(':selected').attr('value')]
+
                     var value = $('#' + parameter.id.substring(0, parameter.id.length - 9) + 'value_interval');
                     if (!current_parameter) {
                          clean_options(value);

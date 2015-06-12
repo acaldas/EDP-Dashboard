@@ -84,3 +84,23 @@
 
 }
 
+.recent_values {
+  padding-left: 0px;
+
+  .list-group-item {
+    padding: 10px 10px;
+    em {
+      line-height: 20px;
+    }
+  }
+}
+
+.substation-select {
+  a.list-group-item {
+    color: #337ab7;
+    &:hover {
+      color: #23527c;
+    }
+  }
+}
+

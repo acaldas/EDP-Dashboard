@@ -48,15 +48,18 @@ def get_map(request, latitude=Substation.get_center_latitude(), longitude=Substa
 
 def home(request):
     map_form = MapForm(initial={'map': get_map(request)})
-    context = {'form': map_form}
-    return render_to_response('home.html', context)
+    substations = Substation.objects.order_by('-position').all()
+    context = {'form': map_form, 'substations': substations}
+    return render(request, 'home.html', context)
 
 
 def show_substation(request, substation_id):
+    substations = Substation.objects.order_by('-position').all()
     substation = get_object_or_404(Substation, pk=substation_id)
     map_form = SmallMapForm(initial={'map': get_map(request, substation.position.latitude, substation.position.longitude, zoom=15)})
     context = {'substation': substation,
-               'map': map_form
+               'map': map_form,
+               'substations': substations
               }
     return render(request, 'show_substation.html', context)
 
@@ -76,7 +79,9 @@ def asset_change_form(request):
 
 def show_asset(request, asset_id):
     asset = get_object_or_404(Asset, pk=asset_id)
-    context = {'asset': asset.get_asset_info(historic=True)}
+    substations = Substation.objects.order_by('-position').all()
+    context = {'asset': asset.get_asset_info(historic=True),
+               'substations': substations}
     return render(request,'show_asset.html', context)
 
 

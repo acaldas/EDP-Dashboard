@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Afonso'
 
-
+import autocomplete_light
 from django.db import models
 from datetime import date
 from django.utils.encoding import smart_str
@@ -36,7 +36,8 @@ class Asset(models.Model):
                      + self.asset_type.get_external_factors() + self.asset_type.get_aging_parameters()
         result = dict.fromkeys(p.name for p in parameters)
         for p in parameters:
-            result[p.name] = {
+            result[p.pk] = {
+                'name': p.name,
                 'values': [{'id': v.id, 'value': v.value} for v in p.get_possible_correspondences()],
                 'function': p.is_function()
             }
@@ -79,6 +80,8 @@ class Asset(models.Model):
 
         component.reliability = contribution
         component.local_health_index = hi
+        if not contribution:
+            return 0
         return hi/contribution*100.0
 
     def get_health_index(self, components, global_parameters):
@@ -98,6 +101,8 @@ class Asset(models.Model):
                         contribution += fault.global_weight
 
         self.reliability = contribution
+        if not contribution:
+            return 0
         return hi/contribution*100.0
 
     def get_reliability(self, components, global_parameters):
@@ -179,7 +184,7 @@ class Asset(models.Model):
         if type(date) == datetime:
             date = date.date()
 
-        return Asset.num_years(date, self.obsolescence_date)
+        return max(0, Asset.num_years(date, self.obsolescence_date))
 
     def get_remaining_lifetime(self, date=datetime.now()):
         return min(self.get_obsolescence_lifetime(date), self.get_reduced_lifetime(date))
@@ -243,6 +248,7 @@ class Asset(models.Model):
             info['fabrication_year'] = self.fabrication_year
             info['technology'] = self.asset_type.technology
             info['panel'] = self.panel
+            info['recent_values'] = ParameterValue.objects.filter(asset=self).order_by('-date')[:10]
             all_parameters = filter(lambda x: self.has_value(x.values), all_parameters)
             info['all_parameters'] = all_parameters
 
@@ -337,3 +343,9 @@ class ParameterValue(models.Model):
     def __unicode__(self):
 
         return str(self.parameter).decode('utf-8') + ' - ' + self.get_value()
+
+
+class AssetAutocomplete(autocomplete_light.AutocompleteModelBase):
+    search_fields = ['^name', 'sap_id']
+
+autocomplete_light.register(Asset, AssetAutocomplete)

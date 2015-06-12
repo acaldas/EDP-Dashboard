@@ -33,5 +33,6 @@ ul.asset-progress-bar {
     background: #dbe3ec;
     height: 10px;
     margin-bottom: 4px;
-    transition: background-color 0.8s;}
+    transition: background-color 0.8s;
+  }
 
