@@ -51,6 +51,8 @@ class AssetAdmin(admin.ModelAdmin):
         ParameterValueInline,
     ]
 
+    search_fields = ['name', 'sap_id']
+
     def __init__(self, *args, **kwargs):
         super(AssetAdmin, self).__init__(*args, **kwargs)
         self.change_form_template = "report.html"
@@ -72,4 +74,8 @@ admin.site.register(Asset, AssetAdmin)
 
 admin.site.register(ParameterValue, admin.ModelAdmin)
 
-admin.site.register(Substation, admin.ModelAdmin)
+
+class SubstationAdmin(admin.ModelAdmin):
+    search_fields = ['name', 'sap_id']
+
+admin.site.register(Substation, SubstationAdmin)

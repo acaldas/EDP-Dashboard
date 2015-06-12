@@ -48,7 +48,7 @@ INSTALLED_APPS = (
     'djangobower',
     'geoposition',
     'gmapi',
-    'favicon'
+    'favicon',
 )
 
 MIDDLEWARE_CLASSES = (

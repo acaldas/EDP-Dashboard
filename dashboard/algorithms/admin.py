@@ -26,7 +26,6 @@ class FaultsForm(BaseNestedModelForm):
     def save(self, *args, **kwargs):
         # FIXME: 'commit' argument is not handled
         # TODO: Wrap reassignments into transaction
-        # NOTE: Previously assigned Foos are silently reset
         instance = super(FaultsForm, self).save(commit=False)
         self.fields['parameters'].initial.update(fault=None)
         self.cleaned_data['parameters'].update(fault=instance)
@@ -68,6 +67,7 @@ class TechnologyAdmin(NestedModelAdmin):
     model = Technology
     inlines = [AgingParameterInline, ]
     save_as = True
+    search_fields = ['name']
 
     def queryset(self, request):
         return self.model.objects.all()
@@ -114,6 +114,7 @@ class ParametersAdmin(admin.ModelAdmin):
     inlines = [ValueCorrespondenceInline, ]
     save_as = True
     list_display = ('name', 'Ativo', 'Tipo')
+    search_fields = ['name']
 
     def Ativo(self, obj):
         return obj.get_asset()
@@ -141,6 +142,7 @@ class AssetTypeAdmin(NestedModelAdmin):
     inlines = [GlobalParameterInline, ComponentInline, ]
     save_as = True
     list_display = ('name', 'technology')
+    search_fields = ['name']
 
 admin.site.register(AssetType, AssetTypeAdmin)
 
@@ -160,6 +162,7 @@ class FaultsAdmin(admin.ModelAdmin):
     #form = FaultsForm
     inlines = [ExternalFactorInline,]
     list_display = ('name', 'get_asset')
+    search_fields = ['name']
 
     def get_asset(self, obj):
         if obj.function:

@@ -12,6 +12,8 @@ class RegressionFunctionAdmin(admin.ModelAdmin):
     inlines = (
         FunctionValueInline,
     )
+    search_fields = ['name']
+
     save_as = True
 
 admin.site.register(RegressionFunction, RegressionFunctionAdmin)
