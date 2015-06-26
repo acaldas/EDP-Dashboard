@@ -1,17 +1,20 @@
- <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+{% load staticfiles %}
+<!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0; min-height: 110px">
+            <div class="navbar-header" style="position: relative">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" style="position: absolute;right: 30px;top: 20px;">
                     <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                    <span class="icon-bar" style="width:50px; height:7px"></span>
+                    <span class="icon-bar" style="width:50px; height:7px;margin-top:10px"></span>
+                    <span class="icon-bar" style="width:50px; height:7px;margin-top:10px"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'home' %}">Dashboard</a>
+                <a class="navbar-brand" href="{% url 'home' %}" style="height: auto">
+                    <img src="{% static 'images/header_logo_new.png' %}"/>
+                </a>
             </div>
             <!-- /.navbar-header -->
 
-            <ul class="nav navbar-top-links navbar-right">
+            <!-- <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -60,9 +63,9 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-messages -->
+                    <!-- /.dropdown-messages
                 </li>
-                <!-- /.dropdown -->
+
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -139,9 +142,9 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-tasks -->
+
                 </li>
-                <!-- /.dropdown -->
+
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -199,9 +202,9 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-alerts -->
+
                 </li>
-                <!-- /.dropdown -->
+                <!-- /.dropdown
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -215,10 +218,11 @@
                         <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
-                    <!-- /.dropdown-user -->
+
                 </li>
-                <!-- /.dropdown -->
-            </ul>
+                <!-- /.dropdown
+            </ul> -->
+
             <!-- /.navbar-top-links -->
 
             <div class="navbar-default sidebar" role="navigation">
@@ -226,7 +230,7 @@
                     <ul class="nav" id="side-menu">
                         <li class="sidebar-search">
                             <div class="input-group custom-search-form">
-                                <input id="assetAutocomplete" type="text" class="form-control" data-url="">
+                                <input id="assetAutocomplete" type="text" class="form-control" data-url="" placeholder="Procurar ativo">
                                 <span class="input-group-btn">
                                 <button class="btn btn-default" type="button">
                                     <i class="fa fa-search"></i>
@@ -239,7 +243,7 @@
                             <a href="{% url 'home' %}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="http://{{request.get_host}}/admin"><i class="fa fa-cog fa-fw"></i> Configurações</a>
+                            <a href="http://{{request.get_host}}/admin"><i class="fa fa-cog fa-fw"></i> Administração</a>
                             <!-- /.nav-second-level -->
                         </li>
                         <li class="active">

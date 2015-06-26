@@ -17,10 +17,12 @@
             </div>
             <!-- /.row -->
               <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-8">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3>Informações</h3>
+                            <i class="fa fa-list-alt fa-fw" style="line-height: 24px"></i>
+                            <h3 class="pull-left">Informações</h3>
+                            <a href="http://{{request.get_host}}/admin/network/substation/{{substation.id}}" class="pull-left" style="font-size:18px; padding-left:10px; line-height: 24px; text-decoration: underline">Editar</a>
                         </div>
                         <div class="panel-body">
                             <h4><b>SAP ID:</b> {{substation.sap_id}}</h4>
@@ -32,22 +34,25 @@
 
                     <div class="panel panel-default">
                         <div class="panel-heading">
+                            <i class="fa fa-list-alt fa-fw" style="line-height: 24px"></i>
                             <h3>Ativos</h3>
                         </div>
                         <div class="panel-body">
                             <table id="substation-assets" class="table table-hover">
                                 <thead>
                                     <tr>
+                                      <th>SAP ID</th>
                                       <th>Tipo</th>
                                       <th>Ativo</th>
-                                      <th>Índice de Saúde</th>
-                                      <th>Probabilidade de Falha</th>
-                                      <th>Tempo de Vida</th>
+                                      <th style="text-align:center">Índice de Saúde</th>
+                                      <th style="text-align:center">Probabilidade de Falha</th>
+                                      <th style="text-align:center">Tempo de Vida</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 {% for asset in substation.get_assets_info %}
                                     <tr>
+                                        <td>{%if asset.sap_id%}{{asset.sap_id}}{%else%}---{%endif%}</td>
                                         <td><a href="http://{{request.get_host}}/asset/{{asset.id}}">{{asset.asset_type}}</a></td>
                                         <td><a href="#">{{asset.name}}</a></td>
                                         <td align="center" class="text-color-{{asset.health_index|value_to_color:100}}">{{asset.health_index|floatformat:0}}</td>
@@ -64,6 +69,7 @@
                 <div class="pull-left">
                   <div class="panel panel-default">
                     <div class="panel-heading">
+                        <i class="fa fa-map-marker fa-fw" style="line-height: 24px"></i>
                         <h3>Mapa</h3>
                     </div>
                     <div class="panel-body">

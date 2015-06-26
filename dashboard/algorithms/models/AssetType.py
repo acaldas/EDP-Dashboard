@@ -24,7 +24,7 @@ class AssetType(models.Model):
     aging_function = models.ForeignKey('utils.RegressionFunction', null=True,)
 
     def __unicode__(self):
-        return self.name
+        return u'{}'.format(self.name)
 
     def get_parameters(self):
         parameters = []

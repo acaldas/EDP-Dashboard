@@ -244,6 +244,7 @@ class Asset(models.Model):
             info['sap_id'] = self.sap_id
             info['name'] = self.name
             info['substation'] = self.substation
+            info['substation_id'] = self.substation_id
             info['asset_type'] = self.asset_type
             info['fabrication_year'] = self.fabrication_year
             info['technology'] = self.asset_type.technology

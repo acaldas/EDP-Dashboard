@@ -12,15 +12,25 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="page-header">
-                        <h1>{{asset.asset_type}}</h1>
-                        <div class="asset_information">
-                            <h4><b>Subestação:</b> {{asset.substation}}</h4>
-                            <h4><b>Designação:</b> {{asset.name}}</h4>
-                            <h4><b>Tecnologia:</b> {{asset.technology}}</h4>
-                            {%if asset.sap_id%}<h4><b>SAP ID:</b> {{asset.sap_id}}</h4>{%endif%}
-                            <h4><b>Ano de fabrico:</b> {{asset.fabrication_year}}</h4>
-                            {%if asset.panel%}<h4><b>Painel:</b> {{substation.panel}}</h4>{%endif%}
+                        <div class="panel panel-default">
+                        <div class="panel-heading" style="padding-bottom: 0px">
+                            <h2 style="margin: 0px"  class="pull-left">{{asset.asset_type}}</h2>
+                            <a href="http://{{request.get_host}}/admin/network/asset/{{asset.id}}" class="pull-left" style="font-size:18px; padding-left:10px; line-height: 40px; text-decoration: underline">Editar</a>
                         </div>
+                        <div class="panel-body">
+                            <div class="col-lg-8">
+                            <div class="asset_information">
+                                <h4><b>Subestação:</b> <a href="http://{{request.get_host}}/substation/{{asset.substation_id}}">{{asset.substation}}</a></h4>
+                                <h4><b>Designação:</b> {{asset.name}}</h4>
+                                <h4><b>Tecnologia:</b> {{asset.technology}}</h4>
+                                <h4><b>SAP ID:</b> {%if asset.sap_id%}{{asset.sap_id}}{%else%}---{%endif%}</h4>
+                                <h4><b>Ano de fabrico:</b> {{asset.fabrication_year}}</h4>
+                                {%if asset.panel%}<h4><b>Painel:</b> {{substation.panel}}</h4>{%endif%}
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
                     </div>
                 </div>
                 <!-- /.col-lg-12 -->
@@ -317,25 +327,6 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <i class="fa fa-line-chart fa-fw"></i><h3>Histórico</h3>
-                            <div class="pull-right">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                        Actions
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a href="#">Action</a>
-                                        </li>
-                                        <li><a href="#">Another action</a>
-                                        </li>
-                                        <li><a href="#">Something else here</a>
-                                        </li>
-                                        <li class="divider"></li>
-                                        <li><a href="#">Separated link</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
