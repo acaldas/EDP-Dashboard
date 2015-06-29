@@ -8,6 +8,7 @@ from pylab import *
 
 
 class RegressionFunction(models.Model):
+
     LINEAR = 1
     EXPONENTIAL = 2
     QUADRATIC_SECOND = 3
@@ -19,12 +20,13 @@ class RegressionFunction(models.Model):
         (QUADRATIC_SECOND, u'Quadrática 2º Grau'),
         (QUADRATIC_THIRD, u'Quadrática 3º Grau'),
     )
-    type = models.IntegerField(choices=TYPE_CHOICES, default=LINEAR)
-
-    name = models.CharField(max_length=200)
+    type = models.IntegerField(choices=TYPE_CHOICES, default=LINEAR, verbose_name=u"Tipo de Regressão")
+    name = models.CharField(max_length=200, verbose_name=u"Nome")
 
     class Meta:
         ordering = ('name',)
+        verbose_name = u'Função de Regressão'
+        verbose_name_plural = u'Funções de Regressão'
 
     def __unicode__(self):
         return self.name
@@ -48,6 +50,10 @@ class RegressionFunction(models.Model):
 
 
 class FunctionValue(models.Model):
+    class Meta:
+        verbose_name = u'Valor de Função'
+        verbose_name_plural = u'Valores de Função'
+
     function = models.ForeignKey(RegressionFunction)
     x = models.FloatField()
     y = models.FloatField()

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: latin1 -*-
 __author__ = 'Afonso'
 
 from django.db import models
@@ -8,12 +8,14 @@ from AssetType import Technology, GlobalParameter
 
 class Parameter(models.Model):
 
-    name = models.CharField(max_length=200)
-    fault = models.ForeignKey(Fault, blank=True, null=True, editable=False)
-    function = models.ForeignKey('utils.RegressionFunction', null=True, blank=True)
-    technology = models.ForeignKey(Technology, related_name="aging_parameters",null=True, blank=True, editable=False)
+    name = models.CharField(max_length=200, verbose_name=u'Nome')
+    fault = models.ForeignKey(Fault, blank=True, null=True, editable=False, verbose_name=u'Falha')
+    function = models.ForeignKey('utils.RegressionFunction', null=True, blank=True, verbose_name=u'FunÁ„o de Regress„o')
+    technology = models.ForeignKey(Technology, related_name="aging_parameters", null=True, blank=True, editable=False, verbose_name=u'Tecnologia')
 
-
+    class Meta:
+        verbose_name = u'Par‚metro'
+        verbose_name_plural = u'Par‚metros'
 
     def __unicode__(self):
         return u'{} - {} - {}'.format(self.get_asset(), self.get_type(), self.name)
@@ -81,13 +83,13 @@ class Parameter(models.Model):
 
     def get_type(self):
         if self.fault and self.fault.function and self.fault.function.component and self.fault.function.component.asset:
-            return u'√çndice de Sa√∫de'
+            return u'Õndice de Sa˙de'
         elif self.technology:
             return 'Envelhecimento'
 
         global_parameter = GlobalParameter.objects.filter(parameter=self).first()
         if global_parameter:
-            return u'√çndice de Sa√∫de'
+            return u'Õndice de Sa˙de'
 
         externalFactor = ExternalFactor.objects.filter(parameter=self).first()
         if externalFactor:
@@ -97,11 +99,15 @@ class Parameter(models.Model):
 
 
 class ValueCorrespondence(models.Model):
-    parameter = models.ForeignKey(Parameter)
-    value = models.CharField(max_length=200)
-    health_index = models.FloatField()
-    warning = models.CharField(max_length=200, null=True, blank=True)
-    alert = models.CharField(max_length=200, null=True, blank=True)
+    parameter = models.ForeignKey(Parameter, verbose_name=u'Par‚metro')
+    value = models.CharField(max_length=200, verbose_name=u'Valor')
+    health_index = models.FloatField(verbose_name=u'Õndice de Sa˙de')
+    warning = models.CharField(max_length=200, null=True, blank=True, verbose_name=u'Aviso')
+    alert = models.CharField(max_length=200, null=True, blank=True, verbose_name=u'Alarme')
+
+    class Meta:
+        verbose_name = u'CorrespondÍncia de Valor'
+        verbose_name_plural = u'CorrespondÍncias de Valor'
 
     def __unicode__(self):
         return u'{0}'.format(self.value)
@@ -118,5 +124,6 @@ class ValueCorrespondence(models.Model):
 class Parameters(Parameter):
     class Meta:
         proxy = True
-        verbose_name_plural = "Parameters"
+        verbose_name = u'Par‚meto'
+        verbose_name_plural = u'Par‚metros'
         ordering = ('name',)

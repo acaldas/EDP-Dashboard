@@ -1,3 +1,4 @@
+# -*- coding: latin1 -*-
 __author__ = 'Afonso'
 
 from django.db import models
@@ -5,8 +6,12 @@ from AssetType import AssetType
 
 
 class Component(models.Model):
-    name = models.CharField(max_length=200)
-    asset = models.ForeignKey(AssetType)
+    name = models.CharField(max_length=200, verbose_name=u'Componente')
+    asset = models.ForeignKey(AssetType, verbose_name=u'Tipo de Ativo')
+
+    class Meta:
+        verbose_name = u'Componente'
+        verbose_name_plural = u'Componentes'
 
     def __unicode__(self):
         return self.name

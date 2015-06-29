@@ -72,8 +72,6 @@ class AssetAdmin(admin.ModelAdmin):
 
 admin.site.register(Asset, AssetAdmin)
 
-admin.site.register(ParameterValue, admin.ModelAdmin)
-
 
 class SubstationAdmin(admin.ModelAdmin):
     search_fields = ['name', 'sap_id']

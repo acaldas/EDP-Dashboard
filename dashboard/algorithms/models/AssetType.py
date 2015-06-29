@@ -6,11 +6,12 @@ from django.db import models
 
 
 class Technology(models.Model):
-    name = models.CharField(max_length=200)
-    max_lifetime = models.IntegerField()
+    name = models.CharField(max_length=200, verbose_name=u'Nome')
+    max_lifetime = models.IntegerField(verbose_name=u'Tempo de vida máxima')
 
     class Meta:
-        verbose_name_plural = "Technologies"
+        verbose_name = "Tecnologia"
+        verbose_name_plural = "Tecnologias"
         ordering = ('name',)
 
     def __unicode__(self):
@@ -18,10 +19,14 @@ class Technology(models.Model):
 
 
 class AssetType(models.Model):
-    name = models.CharField(max_length=200)
-    global_parameters = models.ManyToManyField('algorithms.Parameter', through='algorithms.GlobalParameter')
-    technology = models.OneToOneField(Technology)
-    aging_function = models.ForeignKey('utils.RegressionFunction', null=True,)
+    name = models.CharField(max_length=200, verbose_name=u'Nome')
+    global_parameters = models.ManyToManyField('algorithms.Parameter', through='algorithms.GlobalParameter', verbose_name=u'Parâmetros Globais')
+    technology = models.OneToOneField(Technology, verbose_name=u'Tecnologia')
+    aging_function = models.ForeignKey('utils.RegressionFunction', null=True, verbose_name=u'Função de Envelhecimento')
+
+    class Meta:
+        verbose_name = "Tipo de Ativo"
+        verbose_name_plural = "Tipos de Ativo"
 
     def __unicode__(self):
         return u'{}'.format(self.name)
@@ -53,10 +58,14 @@ class AssetType(models.Model):
 
 
 class GlobalParameter(models.Model):
-    asset = models.ForeignKey(AssetType)
-    parameter = models.ForeignKey('algorithms.Parameter')
-    local_weight = models.FloatField()
-    global_weight = models.FloatField()
+    asset = models.ForeignKey(AssetType, verbose_name=u'Ativo')
+    parameter = models.ForeignKey('algorithms.Parameter', verbose_name=u'Parâmetro')
+    local_weight = models.FloatField(verbose_name=u'Peso Específico')
+    global_weight = models.FloatField(verbose_name=u'Peso Global')
+
+    class Meta:
+        verbose_name = u"Parâmetro Global"
+        verbose_name_plural = u"Parâmetros Globais"
 
     def __unicode__(self):
         return u'{} - {}'.format(self.asset, self.parameter.name)

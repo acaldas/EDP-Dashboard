@@ -4,6 +4,7 @@ $colors: #5CB85C, #6EBD56, #80C250, #92C74B, #A4CC45, #B6D140, #C8D63A, #DADB35,
 @for $i from 1 to length($colors)+1 {
   .color-#{$i} { background-color: nth($colors, $i);}
   .text-color-#{$i} { color: nth($colors, $i); font-weight: bold;}
+  .pf-text-color-#{length($colors)+1-$i} { color: nth($colors, $i); font-weight: bold;}
 }
 
 .fp-panel {

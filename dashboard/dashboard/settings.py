@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'geoposition',
     'gmapi',
     'favicon',
+    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (

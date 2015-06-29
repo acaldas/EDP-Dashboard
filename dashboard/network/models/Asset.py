@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: latin1 -*-
 __author__ = 'Afonso'
 
 import autocomplete_light
@@ -13,14 +13,17 @@ import json
 
 
 class Asset(models.Model):
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, verbose_name="Nome")
     sap_id = models.CharField(max_length=200, blank=True, null=True, verbose_name="SAP ID")
-    fabrication_year = models.IntegerField()
-    obsolescence_date = models.DateField()
-    panel = models.CharField(max_length=200, blank=True, null=True)
-    asset_type = models.ForeignKey('algorithms.AssetType')
+    fabrication_year = models.IntegerField(verbose_name="Ano de Fabrico")
+    obsolescence_date = models.DateField(verbose_name=u"Data de Obsolescência")
+    panel = models.CharField(max_length=200, blank=True, null=True, verbose_name="Painel")
+    asset_type = models.ForeignKey('algorithms.AssetType', verbose_name=u'Tipo de Ativo')
     parameters = models.ManyToManyField('algorithms.Parameter', through='network.ParameterValue')
-    substation = models.ForeignKey('network.Substation')
+    substation = models.ForeignKey('network.Substation', verbose_name=u'Subestação')
+
+    class Meta:
+        verbose_name = 'Ativo'
 
     def get_age(self):
         return date.today().year - self.fabrication_year
@@ -299,11 +302,15 @@ class Asset(models.Model):
 
 
 class ParameterValue(models.Model):
-    asset = models.ForeignKey(Asset)
-    parameter = models.ForeignKey('algorithms.Parameter')
-    date = models.DateField(default=datetime.now)
-    value_interval = models.ForeignKey('algorithms.ValueCorrespondence', blank=True, null=True)
-    value = models.FloatField(blank=True, null=True)
+    asset = models.ForeignKey(Asset, verbose_name="Ativo")
+    parameter = models.ForeignKey('algorithms.Parameter', verbose_name=u"Parâmetro")
+    date = models.DateField(default=datetime.now, verbose_name="Data")
+    value_interval = models.ForeignKey('algorithms.ValueCorrespondence', blank=True, null=True, verbose_name="Intervalo de valores")
+    value = models.FloatField(blank=True, null=True, verbose_name="Valor")
+
+    class Meta:
+        verbose_name = u'Valor de Parâmetro'
+        verbose_name_plural = u'Valores de Parâmetro'
 
     def get_possible_values(self):
         return self.parameter.get_possible_correspondences()

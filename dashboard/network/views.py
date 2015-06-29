@@ -1,3 +1,4 @@
+# -*- coding: latin1 -*-
 from django.shortcuts import render
 from django import forms
 from django.shortcuts import render_to_response
@@ -49,7 +50,37 @@ def get_map(request, latitude=Substation.get_center_latitude(), longitude=Substa
 def home(request):
     map_form = MapForm(initial={'map': get_map(request)})
     substations = Substation.objects.order_by('-position').all()
-    context = {'form': map_form, 'substations': substations}
+    #assets = sorted(reduce(lambda a, b: a+b, map(lambda x: x.get_assets_info(), substations)), key=lambda x: x.get('failure_probability'), reverse=True)[0:10]
+    assets = reduce(lambda a, b: a+b, map(lambda x: x.get_assets_info(), substations))
+    assets.append({
+        'sap_id': 280202124,
+        'asset_type': u'Disjuntor - Óleo',
+        'name': u'Disjuntor Óleo',
+        'health_index': 43,
+        'failure_probability': 78,
+        'remaining_lifetime': 5,
+        'max_age':30
+    })
+    assets.append({
+        'sap_id': 280202126,
+        'asset_type': u'Disjuntor - Vácuo',
+        'name': u'Disjuntor Vácuo',
+        'health_index': 70,
+        'failure_probability': 34,
+        'remaining_lifetime': 18,
+        'max_age':30
+    })
+    assets.append({
+        'sap_id': 280202125,
+        'asset_type': u'Disjuntor - SF6',
+        'name': u'Disjuntor SF6',
+        'health_index': 82,
+        'failure_probability': 24,
+        'remaining_lifetime': 23,
+        'max_age': 30
+    })
+    assets = sorted(assets,key=lambda x: x.get('failure_probability'), reverse=True)[0:10]
+    context = {'form': map_form, 'substations': substations, 'assets': assets}
     return render(request, 'home.html', context)
 
 
@@ -57,9 +88,39 @@ def show_substation(request, substation_id):
     substations = Substation.objects.order_by('-position').all()
     substation = get_object_or_404(Substation, pk=substation_id)
     map_form = SmallMapForm(initial={'map': get_map(request, substation.position.latitude, substation.position.longitude, zoom=15)})
+    assets = substation.get_assets_info()
+    assets.append({
+        'sap_id': 280202124,
+        'asset_type': u'Disjuntor - Óleo',
+        'name': u'Disjuntor Óleo',
+        'health_index': 43,
+        'failure_probability': 78,
+        'remaining_lifetime': 5,
+        'max_age':30
+    })
+    assets.append({
+        'sap_id': 280202126,
+        'asset_type': u'Disjuntor - Vácuo',
+        'name': u'Disjuntor Vácuo',
+        'health_index': 70,
+        'failure_probability': 34,
+        'remaining_lifetime': 18,
+        'max_age':30
+    })
+    assets.append({
+        'sap_id': 280202125,
+        'asset_type': u'Disjuntor - SF6',
+        'name': u'Disjuntor SF6',
+        'health_index': 82,
+        'failure_probability': 24,
+        'remaining_lifetime': 23,
+        'max_age': 30
+    })
+    assets = sorted(assets,key=lambda x: x.get('health_index'), reverse=True)[0:10]
     context = {'substation': substation,
                'map': map_form,
-               'substations': substations
+               'substations': substations,
+               'assets': assets
               }
     return render(request, 'show_substation.html', context)
 

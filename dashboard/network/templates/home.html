@@ -1,5 +1,6 @@
 {% include "header.html" with title='Home'  %}
 {% load staticfiles %}
+{% load network_extras %}
 
 
 <body>
@@ -16,6 +17,7 @@
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
+            <div class="row">
                 <div class="col-lg-3">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -65,8 +67,46 @@
                         </div>
                     </div>
                 </div>
+            </div>
             <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-list-alt fa-fw" style="line-height: 24px"></i>
+                            <h3>Ativos em risco</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table id="substation-assets" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                      <th>SAP ID</th>
+                                      <th>Tipo</th>
+                                      <th>Ativo</th>
+                                      <th style="text-align:center">Índice de Saúde</th>
+                                      <th style="text-align:center">Probabilidade de Falha</th>
+                                      <th style="text-align:center">Tempo de Vida</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for asset in assets %}
+                                    <tr>
+                                        <td>{%if asset.sap_id%}{{asset.sap_id}}{%else%}---{%endif%}</td>
+                                        <td><a href="http://{{request.get_host}}/asset/{{asset.id}}">{{asset.asset_type}}</a></td>
+                                        <td><a href="#">{{asset.name}}</a></td>
+                                        <td align="center" class="text-color-{{asset.health_index|value_to_color:100}}">{{asset.health_index|floatformat:0}}</td>
+                                        <td align="center" class="pf-text-color-{{asset.failure_probability|value_to_color:100}}">{{asset.failure_probability|percentage}}</td>
+                                        <td align="center" class="text-color-{{asset.remaining_lifetime|value_to_color:asset.max_age}}">{{asset.remaining_lifetime|floatformat:0}}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
         </div>
+        </div>
+
         <!-- /#page-wrapper -->
 
     </div>

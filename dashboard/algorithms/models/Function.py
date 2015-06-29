@@ -1,3 +1,4 @@
+# -*- coding: latin1 -*-
 __author__ = 'Afonso'
 
 from django.db import models
@@ -5,8 +6,12 @@ from Component import Component
 
 
 class Function(models.Model):
-    name = models.CharField(max_length=200)
-    component = models.ForeignKey(Component)
+    name = models.CharField(max_length=200, verbose_name=u'Nome')
+    component = models.ForeignKey(Component, verbose_name=u'Componente')
+
+    class Meta:
+        verbose_name = u'Função'
+        verbose_name_plural = u'Funções'
 
     def __unicode__(self):
         return self.name
