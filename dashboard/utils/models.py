@@ -5,7 +5,7 @@ import abc
 from scipy import stats
 from math import log
 from pylab import *
-
+from numpy import poly1d, polyfit
 
 class RegressionFunction(models.Model):
 
@@ -17,16 +17,16 @@ class RegressionFunction(models.Model):
     TYPE_CHOICES = (
         (LINEAR, u'Linear'),
         (EXPONENTIAL, u'Exponencial'),
-        (QUADRATIC_SECOND, u'Quadrática 2º Grau'),
-        (QUADRATIC_THIRD, u'Quadrática 3º Grau'),
+        (QUADRATIC_SECOND, u'Quadrï¿½tica 2ï¿½ Grau'),
+        (QUADRATIC_THIRD, u'Quadrï¿½tica 3ï¿½ Grau'),
     )
-    type = models.IntegerField(choices=TYPE_CHOICES, default=LINEAR, verbose_name=u"Tipo de Regressão")
+    type = models.IntegerField(choices=TYPE_CHOICES, default=LINEAR, verbose_name=u"Tipo de Regressï¿½o")
     name = models.CharField(max_length=200, verbose_name=u"Nome")
 
     class Meta:
         ordering = ('name',)
-        verbose_name = u'Função de Regressão'
-        verbose_name_plural = u'Funções de Regressão'
+        verbose_name = u'Funï¿½ï¿½o de Regressï¿½o'
+        verbose_name_plural = u'Funï¿½ï¿½es de Regressï¿½o'
 
     def __unicode__(self):
         return self.name
@@ -51,8 +51,8 @@ class RegressionFunction(models.Model):
 
 class FunctionValue(models.Model):
     class Meta:
-        verbose_name = u'Valor de Função'
-        verbose_name_plural = u'Valores de Função'
+        verbose_name = u'Valor de Funï¿½ï¿½o'
+        verbose_name_plural = u'Valores de Funï¿½ï¿½o'
 
     function = models.ForeignKey(RegressionFunction)
     x = models.FloatField()

@@ -1,7 +1,6 @@
 # -*- coding: latin1 -*-
 __author__ = 'Afonso'
 
-import autocomplete_light
 from django.db import models
 from datetime import date
 from django.utils.encoding import smart_str
@@ -16,11 +15,11 @@ class Asset(models.Model):
     name = models.CharField(max_length=200, verbose_name="Nome")
     sap_id = models.CharField(max_length=200, blank=True, null=True, verbose_name="SAP ID")
     fabrication_year = models.IntegerField(verbose_name="Ano de Fabrico")
-    obsolescence_date = models.DateField(verbose_name=u"Data de Obsolescência")
+    obsolescence_date = models.DateField(verbose_name=u"Data de Obsolescï¿½ncia")
     panel = models.CharField(max_length=200, blank=True, null=True, verbose_name="Painel")
     asset_type = models.ForeignKey('algorithms.AssetType', verbose_name=u'Tipo de Ativo')
     parameters = models.ManyToManyField('algorithms.Parameter', through='network.ParameterValue')
-    substation = models.ForeignKey('network.Substation', verbose_name=u'Subestação')
+    substation = models.ForeignKey('network.Substation', verbose_name=u'Subestaï¿½ï¿½o')
 
     class Meta:
         verbose_name = 'Ativo'
@@ -303,14 +302,14 @@ class Asset(models.Model):
 
 class ParameterValue(models.Model):
     asset = models.ForeignKey(Asset, verbose_name="Ativo")
-    parameter = models.ForeignKey('algorithms.Parameter', verbose_name=u"Parâmetro")
+    parameter = models.ForeignKey('algorithms.Parameter', verbose_name=u"Parï¿½metro")
     date = models.DateField(default=datetime.now, verbose_name="Data")
     value_interval = models.ForeignKey('algorithms.ValueCorrespondence', blank=True, null=True, verbose_name="Intervalo de valores")
     value = models.FloatField(blank=True, null=True, verbose_name="Valor")
 
     class Meta:
-        verbose_name = u'Valor de Parâmetro'
-        verbose_name_plural = u'Valores de Parâmetro'
+        verbose_name = u'Valor de Parï¿½metro'
+        verbose_name_plural = u'Valores de Parï¿½metro'
 
     def get_possible_values(self):
         return self.parameter.get_possible_correspondences()
@@ -351,9 +350,3 @@ class ParameterValue(models.Model):
     def __unicode__(self):
 
         return str(self.parameter).decode('utf-8') + ' - ' + self.get_value()
-
-
-class AssetAutocomplete(autocomplete_light.AutocompleteModelBase):
-    search_fields = ['^name', 'sap_id']
-
-autocomplete_light.register(Asset, AssetAutocomplete)

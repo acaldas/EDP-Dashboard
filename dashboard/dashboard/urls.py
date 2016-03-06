@@ -1,5 +1,3 @@
-import autocomplete_light
-autocomplete_light.autodiscover()
 from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from network import views
@@ -11,7 +9,6 @@ urlpatterns = [
     #url(r'^admin/network/asset/(?P<asset_id>[0-9]+)/$', 'network.views.asset_change_form'),
     url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^autocomplete/', include('autocomplete_light.urls')),
     url(r'^asset_parameters/(?P<asset_id>[0-9]+)/$', views.get_asset_parameters_and_possible_values, name = 'get_asset_parameters_and_possible_values' ),
     url(r'^asset/(?P<asset_id>[0-9]+)/$', views.show_asset, name='show_asset'),
     url(r'^asset_skeleton/(?P<asset_id>[0-9]+)/$', views.show_asset_skeleton, name='show_asset_skeleton'),
