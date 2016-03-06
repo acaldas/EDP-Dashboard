@@ -1,0 +1,10 @@
+django==1.8.11
+django-grappelli
+grappelli-nested-inlines
+django-autocomplete-light
+django-bower
+django-geoposition
+https://bitbucket.org/dbinit/django-gmapi/get/default.tar.gz
+django-favicon
+django-extensions
+python-dateutil

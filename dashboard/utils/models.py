@@ -2,10 +2,8 @@
 
 from django.db import models
 import abc
-from scipy import stats
 from math import log
-from pylab import *
-from numpy import poly1d, polyfit
+import numpy as np
 
 class RegressionFunction(models.Model):
 
@@ -17,16 +15,16 @@ class RegressionFunction(models.Model):
     TYPE_CHOICES = (
         (LINEAR, u'Linear'),
         (EXPONENTIAL, u'Exponencial'),
-        (QUADRATIC_SECOND, u'Quadrï¿½tica 2ï¿½ Grau'),
-        (QUADRATIC_THIRD, u'Quadrï¿½tica 3ï¿½ Grau'),
+        (QUADRATIC_SECOND, u'Quadrática 2º Grau'),
+        (QUADRATIC_THIRD, u'Quadrática 3º Grau'),
     )
-    type = models.IntegerField(choices=TYPE_CHOICES, default=LINEAR, verbose_name=u"Tipo de Regressï¿½o")
+    type = models.IntegerField(choices=TYPE_CHOICES, default=LINEAR, verbose_name=u"Tipo de Regressão")
     name = models.CharField(max_length=200, verbose_name=u"Nome")
 
     class Meta:
         ordering = ('name',)
-        verbose_name = u'Funï¿½ï¿½o de Regressï¿½o'
-        verbose_name_plural = u'Funï¿½ï¿½es de Regressï¿½o'
+        verbose_name = u'Função de Regressão'
+        verbose_name_plural = u'Funções de Regressão'
 
     def __unicode__(self):
         return self.name
@@ -51,8 +49,8 @@ class RegressionFunction(models.Model):
 
 class FunctionValue(models.Model):
     class Meta:
-        verbose_name = u'Valor de Funï¿½ï¿½o'
-        verbose_name_plural = u'Valores de Funï¿½ï¿½o'
+        verbose_name = u'Valor de Função'
+        verbose_name_plural = u'Valores de Função'
 
     function = models.ForeignKey(RegressionFunction)
     x = models.FloatField()
@@ -75,7 +73,12 @@ class Function(object):
 class LinearFunction(Function):
     def __init__(self, x_values, y_values,):
         Function.__init__(self, x_values, y_values)
-        self.slope, self.intercept, r_value, p_value, std_err = stats.linregress(np.array(self.x_values), np.array(self.y_values))
+        x = np.array(self.x_values)
+        y = np.array(self.y_values)
+        slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+        self.slope = slope
+        self.intercept = intercept
+        intercept, slope = np.polynomial.polynomial.polyfit(x, y, 1)
 
     def predict(self, value):
         return round(self.intercept + self.slope * value, 3)
@@ -84,7 +87,7 @@ class LinearFunction(Function):
 class QuadraticFunction(Function):
     def __init__(self, x_values, y_values, degree):
         Function.__init__(self, x_values, y_values)
-        self.model = poly1d(polyfit(self.x_values, self.y_values, degree))
+        self.model = np.poly1d(np.polyfit(self.x_values, self.y_values, degree))
 
     def predict(self, value):
         return round(self.model(value), 3)
@@ -100,8 +103,9 @@ class ExponentialFunction(Function):
         return a * exp(b * x)
 
     def get_slope(self):
-        slope, intercept, r_value, p_value, std_err = stats.linregress(np.array(self.x_values), np.array(log(self.y_values)))# map(lambda y: log(y), self.y_values))
-
+        x = np.array(self.x_values)
+        y = np.array(np.log(self.y_values))
+        intercept, slope = np.polynomial.polynomial.polyfit(x, y, 1)
         return slope, intercept
 
     def predict(self, value):

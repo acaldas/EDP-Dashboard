@@ -1,5 +1,5 @@
 env
 env/*
 !env/language/
-
+node_modules
 *.pyc
