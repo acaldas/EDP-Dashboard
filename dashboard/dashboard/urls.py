@@ -4,10 +4,9 @@ from network import views
 
 urlpatterns = [
     # Examples:
-    # url(r'^$', 'dashboard.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-    #url(r'^admin/network/asset/(?P<asset_id>[0-9]+)/$', 'network.views.asset_change_form'),
     url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
+    url('autocomplete/asset/$', views.AssetAutocomplete.as_view(), name='asset-autocomplete'),
+    url('autocomplete/substation/$', views.SubstationAutocomplete.as_view(), name='substation-autocomplete'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^asset_parameters/(?P<asset_id>[0-9]+)/$', views.get_asset_parameters_and_possible_values, name = 'get_asset_parameters_and_possible_values' ),
     url(r'^asset/(?P<asset_id>[0-9]+)/$', views.show_asset, name='show_asset'),

@@ -1,2 +1,10 @@
-pip install packages/numpy-1.11.0rc1+mkl-cp27-cp27m-win32.whl
-pip install packages/scipy-0.17.0-cp27-none-win32.whl
+Afonso Neves Caldas
+afonso7caldas@gmail.com
+
+Aplicação desenvolvida em Django 1.8.
+Executar o comando "pip install -r requirements.txt" na pasta "dashboard".
+Para iniciar o servidor utilizar o comando "python manage.py runserver"
+
+O login do administrador é:
+Utilizador: admin
+Password: admin

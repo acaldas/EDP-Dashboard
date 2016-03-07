@@ -4,7 +4,6 @@ __author__ = 'Afonso'
 from django.db import models
 from geoposition.fields import GeopositionField
 
-
 class Substation(models.Model):
     name = models.CharField(max_length=200, verbose_name=u'Instalação')
     position = GeopositionField(verbose_name="Coordenadas")

@@ -25,10 +25,13 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <div class="input-group custom-search-form" style="margin-bottom: 20px">
-                                <input id="substationAutocomplete" type="text" placeholder="Procurar Subestação" class="form-control">
+                            <div class="input-group custom-search-form autocomplete-form" style="margin-bottom: 20px"
+                                 data-src="http:\\{{request.get_host}}/autocomplete/substation"
+                                 data-dest="http:\\{{request.get_host}}/substation/"
+                                 id="substationAutocomplete">
+                                <input type="text" placeholder="Procurar Subestação" class="form-control">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">
+                                    <button class="btn btn-default btn-autocomplete" type="button">
                                         <i class="fa fa-search"></i>
                                     </button>
                                 </span>
@@ -61,7 +64,7 @@
                                 window.marker = {
                                     markerOver: function() { this.openInfoWindow(); },
                                     markerOut: function() { this.closeInfoWindow(); },
-                                    markerClick: function() { console.log(this.title);window.location.href = this.title; }
+                                    markerClick: function() { window.location.href = this.title; }
                                 };
                             </script>
                         </div>
@@ -113,9 +116,6 @@
     <!-- /#wrapper -->
 
    {% include "footer.html" %}
-   <script src="{% static 'network/js/home.js' %}"></script>
-
-
 </body>
 
 </html>
